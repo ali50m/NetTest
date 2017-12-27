@@ -1,0 +1,22 @@
+﻿<?xml version="1.0" encoding="utf-8" ?>
+<sqlMap namespace="Person" xmlns="http://ibatis.apache.org/mapping" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" >
+  <!--模块配置-->
+  <alias>
+    <typeAlias alias="UserInfo" type="ConsoleAppTest.UserInfo" />
+  </alias>
+  <resultMaps>
+    <resultMap id="SelectAllResult" class="UserInfo">
+      <result property="UserName" column="UserName" />
+      <result property="TrueName" column="TrueName" />
+      <result property="UserCode" column="usercode" />
+    </resultMap>
+  </resultMaps>
+  <!--statement配置-->
+  <statements>
+     <select id="SelectOnById" resultMap="SelectAllResult" resultClass="UserInfo" parameterClass="int">
+       select
+       UserName,TrueName,usercode from Sys_UserInfo
+       where usercode = #value#
+     </select>
+  </statements>
+</sqlMap>

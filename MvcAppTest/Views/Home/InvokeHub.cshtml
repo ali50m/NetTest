@@ -1,0 +1,22 @@
+﻿@{
+    Layout = null;
+}
+
+<!DOCTYPE html>
+
+<html>
+<head>
+    <meta name="viewport" content="width=device-width" />
+    <title>InvokeHub</title>
+</head>
+<body>
+    <div>
+        @using (Html.BeginForm())
+        {
+            @Html.TextBox("message", (string)ViewBag.Message??"")
+            <input type="submit" value="推送" />
+        }
+        @Html.Label((string)ViewBag.Result??"")
+    </div>
+</body>
+</html>
