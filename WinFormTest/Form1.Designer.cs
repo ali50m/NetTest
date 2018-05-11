@@ -32,6 +32,8 @@
             this.textBox1 = new System.Windows.Forms.TextBox();
             this.listBox1 = new System.Windows.Forms.ListBox();
             this.sqlConnTest = new System.Windows.Forms.Button();
+            this.txtSocketMsg = new System.Windows.Forms.TextBox();
+            this.label1 = new System.Windows.Forms.Label();
             this.SuspendLayout();
             // 
             // button1
@@ -71,11 +73,30 @@
             this.sqlConnTest.UseVisualStyleBackColor = true;
             this.sqlConnTest.Click += new System.EventHandler(this.sqlConnTest_Click);
             // 
+            // txtSocketMsg
+            // 
+            this.txtSocketMsg.Location = new System.Drawing.Point(54, 304);
+            this.txtSocketMsg.Multiline = true;
+            this.txtSocketMsg.Name = "txtSocketMsg";
+            this.txtSocketMsg.Size = new System.Drawing.Size(362, 159);
+            this.txtSocketMsg.TabIndex = 3;
+            // 
+            // label1
+            // 
+            this.label1.AutoSize = true;
+            this.label1.Location = new System.Drawing.Point(52, 278);
+            this.label1.Name = "label1";
+            this.label1.Size = new System.Drawing.Size(119, 12);
+            this.label1.TabIndex = 4;
+            this.label1.Text = "收到的websocket信息";
+            // 
             // Form1
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 12F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
-            this.ClientSize = new System.Drawing.Size(461, 262);
+            this.ClientSize = new System.Drawing.Size(620, 485);
+            this.Controls.Add(this.label1);
+            this.Controls.Add(this.txtSocketMsg);
             this.Controls.Add(this.listBox1);
             this.Controls.Add(this.textBox1);
             this.Controls.Add(this.sqlConnTest);
@@ -83,6 +104,7 @@
             this.Name = "Form1";
             this.Text = "Form1";
             this.Load += new System.EventHandler(this.Form1_Load);
+            this.Disposed += new System.EventHandler(this.Form1_Disposed);
             this.ResumeLayout(false);
             this.PerformLayout();
 
@@ -94,6 +116,8 @@
         private System.Windows.Forms.TextBox textBox1;
         private System.Windows.Forms.ListBox listBox1;
         private System.Windows.Forms.Button sqlConnTest;
+        private System.Windows.Forms.TextBox txtSocketMsg;
+        private System.Windows.Forms.Label label1;
     }
 }
 
