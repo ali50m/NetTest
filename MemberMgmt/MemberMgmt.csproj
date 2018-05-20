@@ -93,6 +93,11 @@
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
     </ApplicationDefinition>
+    <Compile Include="DesignRepositories\CardInfoRepository.cs" />
+    <Compile Include="IRepositories\ICardInfoRepository.cs" />
+    <Compile Include="Models\CardInfo.cs" />
+    <Compile Include="Repositories\CardInfoRepository.cs" />
+    <Compile Include="Services\BarCodeHook  .cs" />
     <Compile Include="Services\CardInfoService.cs" />
     <Compile Include="ViewModels\BaseViewModel.cs" />
     <Compile Include="ViewModels\MainViewModel.cs" />
@@ -141,12 +146,7 @@
   <ItemGroup>
     <None Include="App.config" />
   </ItemGroup>
-  <ItemGroup>
-    <Folder Include="DesignRepositories\" />
-    <Folder Include="IRepositories\" />
-    <Folder Include="Models\" />
-    <Folder Include="Repositories\" />
-  </ItemGroup>
+  <ItemGroup />
   <ItemGroup>
     <Resource Include="Sources\Images\icon_chacha.png" />
   </ItemGroup>

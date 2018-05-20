@@ -1,5 +1,6 @@
 ﻿using GalaSoft.MvvmLight;
 using GalaSoft.MvvmLight.CommandWpf;
+using MemberMgmt.Services;
 using System;
 using System.Windows;
 using System.Windows.Controls;
@@ -8,12 +9,23 @@ namespace MemberMgmt.ViewModels
 {
     class MainViewModel : BaseViewModel
     {
-        readonly Services.CardInfoService _cardInfoService;
-        public MainViewModel(Services.CardInfoService cardInfoService, CardInfoViewModel cardInfo, SearchInfoViewModel searchInfo)
+        readonly CardInfoService _cardInfoService;
+        readonly BarCodeHook _barCode;
+        public MainViewModel(CardInfoService cardInfoService, BarCodeHook barCode, CardInfoViewModel cardInfo, SearchInfoViewModel searchInfo)
         {
             _cardInfoService = cardInfoService;
+            _barCode = barCode;
             CardInfo = cardInfo;
             SearchInfo = searchInfo;
+            if (IsInDesignMode)
+            {
+                LoadData();
+            }
+            else
+            {
+                //_barCode.BarCodeEvent += args => { MessageBox.Show(args.BarCode); };
+                //_barCode.Start();
+            }
         }
 
         public CardInfoViewModel CardInfo { get; }
@@ -30,6 +42,19 @@ namespace MemberMgmt.ViewModels
                     MessageBox.Show("开卡");
                 }));
             }
+        }
+        void LoadData()
+        {
+            Models.CardInfo cardInfo = _cardInfoService.GetOne();
+            CardInfo.CardNum = cardInfo.CardNum;
+            CardInfo.Name = cardInfo.Name;
+            CardInfo.IdCardNum = cardInfo.IdCardNum;
+        }
+
+        public override void Cleanup()
+        {
+            base.Cleanup();
+            _barCode.Stop();
         }
     }
     class CardInfoViewModel : ViewModelBase

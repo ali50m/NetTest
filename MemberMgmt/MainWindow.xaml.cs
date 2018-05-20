@@ -1,4 +1,5 @@
-﻿using System;
+﻿using MemberMgmt.ViewModels;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
@@ -23,6 +24,15 @@ namespace MemberMgmt
         public MainWindow()
         {
             InitializeComponent();
+            DataContext.Window = this;
+        }
+
+        internal new MainViewModel DataContext
+        {
+            get
+            {
+                return base.DataContext as MainViewModel;
+            }
         }
     }
 }

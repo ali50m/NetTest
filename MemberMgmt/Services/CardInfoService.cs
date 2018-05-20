@@ -8,5 +8,13 @@ namespace MemberMgmt.Services
 {
     class CardInfoService
     {
+        public CardInfoService(IRepositories.ICardInfoRepository repository)
+        {
+            _repository = repository;
+        }
+        IRepositories.ICardInfoRepository _repository;
+        internal Models.CardInfo GetOne() {
+            return _repository.GetOne();
+        }
     }
 }
