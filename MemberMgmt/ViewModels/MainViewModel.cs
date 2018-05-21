@@ -2,6 +2,9 @@
 using GalaSoft.MvvmLight.CommandWpf;
 using MemberMgmt.Services;
 using System;
+using System.Text;
+using System.Threading;
+using System.Threading.Tasks;
 using System.Windows;
 using System.Windows.Controls;
 
@@ -10,11 +13,13 @@ namespace MemberMgmt.ViewModels
     class MainViewModel : BaseViewModel
     {
         readonly CardInfoService _cardInfoService;
-        readonly BarCodeHook _barCode;
-        public MainViewModel(CardInfoService cardInfoService, BarCodeHook barCode, CardInfoViewModel cardInfo, SearchInfoViewModel searchInfo)
+        readonly Vbarapi _vbarapi;
+        public MainViewModel(CardInfoService cardInfoService, Vbarapi vbarapi, CardInfoViewModel cardInfo, SearchInfoViewModel searchInfo)
         {
             _cardInfoService = cardInfoService;
-            _barCode = barCode;
+            _vbarapi = vbarapi;
+            _vbarapi.openDevice(1);
+            _vbarapi.backlight(false);
             CardInfo = cardInfo;
             SearchInfo = searchInfo;
             if (IsInDesignMode)
@@ -23,13 +28,18 @@ namespace MemberMgmt.ViewModels
             }
             else
             {
-                //_barCode.BarCodeEvent += args => { MessageBox.Show(args.BarCode); };
-                //_barCode.Start();
+
             }
         }
 
         public CardInfoViewModel CardInfo { get; }
         public SearchInfoViewModel SearchInfo { get; }
+        bool _scanQrCodeEnable = true;
+        public bool ScanQrCodeEnable
+        {
+            get { return _scanQrCodeEnable; }
+            set { Set(ref _scanQrCodeEnable, value); }
+        }
 
         RelayCommand _openCardCommand;
 
@@ -43,9 +53,61 @@ namespace MemberMgmt.ViewModels
                 }));
             }
         }
-        void LoadData()
+        RelayCommand _scanQrCodeCommand;
+
+        public RelayCommand ScanQrCodeCommand
         {
-            Models.CardInfo cardInfo = _cardInfoService.GetOne();
+            get
+            {
+                return _scanQrCodeCommand ?? (_scanQrCodeCommand = new RelayCommand(async () =>
+                {
+                    ScanQrCodeEnable = false;
+                    var str = await Task.Run(() =>
+                    {
+                        _vbarapi.backlight(true);
+                        _vbarapi.beepControl(3);
+                        var s = "";
+                        for (var i = 0; i < 500; i++)
+                        {
+                            s = Decoder();
+                            if (s != null)
+                            {
+                                _vbarapi.beepControl(1);
+                                break;
+                            }
+                            Thread.Sleep(50);
+                        }
+                        _vbarapi.backlight(false);
+                        ScanQrCodeEnable = true;
+                        return s;
+                    });
+                    if (!string.IsNullOrEmpty(str))
+                    {
+                        LoadData();
+                    }
+                }));
+            }
+        }
+        string Decoder()
+        {
+            byte[] result;
+            string sResult = null;
+            int size;
+            if (_vbarapi.getResultStr(out result, out size))
+            {
+                string msg = System.Text.Encoding.Default.GetString(result);
+                byte[] buffer = Encoding.UTF8.GetBytes(msg);
+                sResult = Encoding.UTF8.GetString(buffer, 0, buffer.Length);
+            }
+            else
+            {
+                sResult = null;
+            }
+            return sResult;
+        }
+        async void LoadData()
+        {
+            Models.CardInfo cardInfo = await _cardInfoService.GetOne();
             CardInfo.CardNum = cardInfo.CardNum;
             CardInfo.Name = cardInfo.Name;
             CardInfo.IdCardNum = cardInfo.IdCardNum;
@@ -54,7 +116,7 @@ namespace MemberMgmt.ViewModels
         public override void Cleanup()
         {
             base.Cleanup();
-            _barCode.Stop();
+            _vbarapi.disConnected();
         }
     }
     class CardInfoViewModel : ViewModelBase
@@ -113,18 +175,7 @@ namespace MemberMgmt.ViewModels
             get { return _endDate; }
             set { Set(ref _endDate, value); }
         }
-        RelayCommand _scanQRCodeCommand;
 
-        public RelayCommand ScanQRCodeCommand
-        {
-            get
-            {
-                return _scanQRCodeCommand ?? (_scanQRCodeCommand = new RelayCommand(() =>
-                {
-                    MessageBox.Show("扫码");
-                }));
-            }
-        }
     }
     class SearchInfoViewModel : ViewModelBase
     {

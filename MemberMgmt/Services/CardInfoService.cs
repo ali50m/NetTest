@@ -13,8 +13,8 @@ namespace MemberMgmt.Services
             _repository = repository;
         }
         IRepositories.ICardInfoRepository _repository;
-        internal Models.CardInfo GetOne() {
-            return _repository.GetOne();
+        internal async Task<Models.CardInfo> GetOne() {
+            return await _repository.GetOne();
         }
     }
 }

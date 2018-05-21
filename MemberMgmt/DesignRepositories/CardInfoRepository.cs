@@ -9,8 +9,9 @@ namespace MemberMgmt.DesignRepositories
 {
     class CardInfoRepository : IRepositories.ICardInfoRepository
     {
-        public CardInfo GetOne()
+        public async Task<CardInfo> GetOne()
         {
+            await Task.FromResult(0);
             return new CardInfo {
                 CardNum = "001",
                 Name = "张三",

@@ -49,6 +49,7 @@ namespace MemberMgmt.ViewModels
         /// </summary>
         public static void Cleanup()
         {
+            
         }
     }
 }

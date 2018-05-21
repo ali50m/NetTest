@@ -1,4 +1,5 @@
-﻿using System;
+﻿using MemberMgmt.Models;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
@@ -8,6 +9,6 @@ namespace MemberMgmt.IRepositories
 {
     interface ICardInfoRepository
     {
-        Models.CardInfo GetOne();
+        Task<CardInfo> GetOne();
     }
 }
