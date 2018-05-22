@@ -6,10 +6,8 @@ using System.Threading.Tasks;
 
 namespace MemberMgmt.Models
 {
-    class CardInfo
+    class Member
     {
-        public String CardNum { get; set; }
-        public String Name { get; set; }
-        public String IdCardNum { get; set; }
+        public string UserName { get; set; }
     }
 }

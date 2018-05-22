@@ -94,8 +94,13 @@
     </ApplicationDefinition>
     <Compile Include="DesignRepositories\CardInfoRepository.cs" />
     <Compile Include="IRepositories\ICardInfoRepository.cs" />
-    <Compile Include="Models\CardInfo.cs" />
+    <Compile Include="IRepositories\IServerPing.cs" />
+    <Compile Include="Models\Card.cs" />
+    <Compile Include="Models\Member.cs" />
+    <Compile Include="Models\Info.cs" />
+    <Compile Include="Models\Seat.cs" />
     <Compile Include="Repositories\CardInfoRepository.cs" />
+    <Compile Include="Repositories\ServerPing.cs" />
     <Compile Include="Services\CardInfoService.cs" />
     <Compile Include="Services\Vbarapi.cs" />
     <Compile Include="ViewModels\BaseViewModel.cs" />

@@ -1,4 +1,5 @@
-﻿using System;
+﻿using MemberMgmt.Models;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
@@ -13,8 +14,27 @@ namespace MemberMgmt.Services
             _repository = repository;
         }
         IRepositories.ICardInfoRepository _repository;
-        internal async Task<Models.CardInfo> GetOne() {
-            return await _repository.GetOne();
+        internal async Task<Info> GetOne(string qrCode)
+        {
+            return await _repository.GetOne(qrCode);
         }
+        internal async Task<Info> GetOne(string memberName, string mobile)
+        {
+            return await _repository.GetOne(memberName, mobile);
+        }
+        internal async Task<Info> EditState(int state)
+        {
+            return await _repository.EditState(state);
+        }
+        internal async Task<String> GetOrderState(string memberId)
+        {
+            return await _repository.GetOrderState(memberId);
+        }
+
+        internal async Task<String> Test(string input)
+        {
+            return await _repository.Test(input);
+        }
+
     }
 }

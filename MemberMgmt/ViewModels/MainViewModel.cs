@@ -1,7 +1,10 @@
 ﻿using GalaSoft.MvvmLight;
 using GalaSoft.MvvmLight.CommandWpf;
+using MemberMgmt.IRepositories;
+using MemberMgmt.Models;
 using MemberMgmt.Services;
 using System;
+using System.Collections.ObjectModel;
 using System.Text;
 using System.Threading;
 using System.Threading.Tasks;
@@ -18,13 +21,14 @@ namespace MemberMgmt.ViewModels
         {
             _cardInfoService = cardInfoService;
             _vbarapi = vbarapi;
+            _vbarapi.addCodeFormat((byte)1);
             _vbarapi.openDevice(1);
             _vbarapi.backlight(false);
             CardInfo = cardInfo;
             SearchInfo = searchInfo;
             if (IsInDesignMode)
             {
-                LoadData();
+                LoadData("");
             }
             else
             {
@@ -83,7 +87,9 @@ namespace MemberMgmt.ViewModels
                     });
                     if (!string.IsNullOrEmpty(str))
                     {
-                        LoadData();
+                        var str1 = await _cardInfoService.Test(str);
+                        MessageBox.Show(str1);
+                        //LoadData(str);
                     }
                 }));
             }
@@ -105,12 +111,15 @@ namespace MemberMgmt.ViewModels
             }
             return sResult;
         }
-        async void LoadData()
+        async void LoadData(string qrCode)
         {
-            Models.CardInfo cardInfo = await _cardInfoService.GetOne();
-            CardInfo.CardNum = cardInfo.CardNum;
-            CardInfo.Name = cardInfo.Name;
-            CardInfo.IdCardNum = cardInfo.IdCardNum;
+            Info info = await _cardInfoService.GetOne(qrCode);
+            CardInfo.CardNum = info.Card.CardNum;
+            CardInfo.Name = info.Card.Name;
+            CardInfo.StartDate = info.Card.StartTime.ToString("yyyy-MM-dd");
+            CardInfo.EndDate = info.Card.EndTime.ToString("yyyy-MM-dd");
+            CardInfo.SeatInfos.Clear();
+            info.Seats.ForEach(m => CardInfo.SeatInfos.Add(m.Row+m.RowIndex+m.SiteInfo));
         }
 
         public override void Cleanup()
@@ -121,6 +130,10 @@ namespace MemberMgmt.ViewModels
     }
     class CardInfoViewModel : ViewModelBase
     {
+        public CardInfoViewModel()
+        {
+            SeatInfos = new ObservableCollection<string>();
+        }
         String _cardNum;
         public String CardNum
         {
@@ -133,12 +146,7 @@ namespace MemberMgmt.ViewModels
             get { return _name; }
             set { Set(ref _name, value); }
         }
-        String _idCardNum;
-        public String IdCardNum
-        {
-            get { return _idCardNum; }
-            set { Set(ref _idCardNum, value); }
-        }
+
         String _mobile;
         public String Mobile
         {
@@ -175,6 +183,7 @@ namespace MemberMgmt.ViewModels
             get { return _endDate; }
             set { Set(ref _endDate, value); }
         }
+        public ObservableCollection<String> SeatInfos { get; private set; } 
 
     }
     class SearchInfoViewModel : ViewModelBase
@@ -204,4 +213,5 @@ namespace MemberMgmt.ViewModels
             }
         }
     }
+    
 }
