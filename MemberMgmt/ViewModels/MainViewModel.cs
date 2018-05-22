@@ -32,8 +32,8 @@ namespace MemberMgmt.ViewModels
             }
         }
 
-        public CardInfoViewModel CardInfo { get; }
-        public SearchInfoViewModel SearchInfo { get; }
+        public CardInfoViewModel CardInfo { get; private set; }
+        public SearchInfoViewModel SearchInfo { get; private set; }
         bool _scanQrCodeEnable = true;
         public bool ScanQrCodeEnable
         {
