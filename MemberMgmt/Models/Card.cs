@@ -21,6 +21,13 @@ namespace MemberMgmt.Models
         public string Info { get; set; }
 
         public String CardNum { get; set; }
+        public MyMemberPossessCard MyMemberPossessCard { get; set; }
 
+    }
+    class MyMemberPossessCard{
+        public int State { get; set; }
+        public string BuyTime { get; set; }
+        public string LoseTime { get; set; }
+        public string CardNum { get; set; }
     }
 }

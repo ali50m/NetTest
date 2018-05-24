@@ -28,7 +28,7 @@ namespace MemberMgmt.ViewModels
             SearchInfo = searchInfo;
             if (IsInDesignMode)
             {
-                LoadData("");
+                //LoadData("");
             }
             else
             {
@@ -38,6 +38,12 @@ namespace MemberMgmt.ViewModels
 
         public CardInfoViewModel CardInfo { get; private set; }
         public SearchInfoViewModel SearchInfo { get; private set; }
+        String _message;
+        public String Message
+        {
+            get { return _message; }
+            set { Set(ref _message, value); }
+        }
         bool _scanQrCodeEnable = true;
         public bool ScanQrCodeEnable
         {
@@ -87,13 +93,33 @@ namespace MemberMgmt.ViewModels
                     });
                     if (!string.IsNullOrEmpty(str))
                     {
-                        //var str1 = await _cardInfoService.Test(str);
-                        MessageBox.Show(str);
-                        //LoadData(str);
+                        Info info = await _cardInfoService.GetOne("88336632114782");
+                        LoadData(info);
                     }
                 }));
             }
         }
+        RelayCommand _searchCommand;
+
+        public RelayCommand SearchCommand
+        {
+            get
+            {
+                return _searchCommand ?? (_searchCommand = new RelayCommand(async () =>
+                {
+                    if (string.IsNullOrWhiteSpace(SearchInfo.Name)&&string.IsNullOrWhiteSpace(SearchInfo.Mobile))
+                    {
+                        MessageBox.Show("搜索条件至少填一项");
+                        return;
+                    }
+                    Info info = await _cardInfoService.GetOne(SearchInfo.Name,SearchInfo.Mobile);
+                    LoadData(info);
+                }));
+            }
+        }
+
+
+
         string Decoder()
         {
             byte[] result;
@@ -111,15 +137,25 @@ namespace MemberMgmt.ViewModels
             }
             return sResult;
         }
-        async void LoadData(string qrCode)
+        void LoadData(Info info)
         {
-            Info info = await _cardInfoService.GetOne(qrCode);
-            CardInfo.CardNum = info.Card.CardNum;
-            CardInfo.Name = info.Card.Name;
-            CardInfo.StartDate = info.Card.StartTime.ToString("yyyy-MM-dd");
-            CardInfo.EndDate = info.Card.EndTime.ToString("yyyy-MM-dd");
-            CardInfo.SeatInfos.Clear();
-            info.Seats.ForEach(m => CardInfo.SeatInfos.Add(m.Row + m.RowIndex + m.SiteInfo));
+            
+            if (info.Ref == "2")
+            {
+                Message = info.Message;
+                return;
+            }
+            CardInfo.SeatInfo = info.SeatsInfo;
+            CardInfo.Mobile = info.Member.Mobile;
+            CardInfo.NoConsumption = info.Member.NoConsumption.ToString();
+            bool cardIsNull = info.Card == null;
+
+            CardInfo.State = cardIsNull ? "" : info.Card.MyMemberPossessCard.State == 1 ? "正常" : info.Card.MyMemberPossessCard.State == 2 ? "卡失效" : "";
+            CardInfo.CardNum = cardIsNull ? "" : info.Card.MyMemberPossessCard.CardNum;
+            CardInfo.Name = cardIsNull ? "" : info.Member.UserName;
+            CardInfo.StartDate = cardIsNull ? "" : info.Card.MyMemberPossessCard.BuyTime;
+            CardInfo.EndDate = cardIsNull ? "" : info.Card.MyMemberPossessCard.LoseTime;
+            CardInfo.CardType = cardIsNull ? "" : info.Card.Name;
         }
 
         public override void Cleanup()
@@ -132,7 +168,7 @@ namespace MemberMgmt.ViewModels
     {
         public CardInfoViewModel()
         {
-            SeatInfos = new ObservableCollection<string>();
+
         }
         String _cardNum;
         public String CardNum
@@ -183,7 +219,18 @@ namespace MemberMgmt.ViewModels
             get { return _endDate; }
             set { Set(ref _endDate, value); }
         }
-        public ObservableCollection<String> SeatInfos { get; private set; }
+        string _seatInfo;
+        public String SeatInfo
+        {
+            get { return _seatInfo; }
+            set { Set(ref _seatInfo, value); }
+        }
+        string _noConsumption;
+        public String NoConsumption
+        {
+            get { return _noConsumption; }
+            set { Set(ref _noConsumption, value); }
+        }
 
     }
     class SearchInfoViewModel : ViewModelBase
@@ -200,18 +247,5 @@ namespace MemberMgmt.ViewModels
             get { return _mobile; }
             set { Set(ref _mobile, value); }
         }
-        RelayCommand _searchCommand;
-
-        public RelayCommand SearchCommand
-        {
-            get
-            {
-                return _searchCommand ?? (_searchCommand = new RelayCommand(() =>
-                {
-                    MessageBox.Show("搜索");
-                }));
-            }
-        }
     }
-
 }

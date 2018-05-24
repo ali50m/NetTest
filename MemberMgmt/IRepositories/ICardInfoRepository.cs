@@ -9,8 +9,6 @@ namespace MemberMgmt.IRepositories
 {
     interface ICardInfoRepository
     {
-        Task<String> Test(string input);
-
         Task<Info> GetOne(string qrCode);
         Task<Info> GetOne(string memberName,string mobile);
         Task<Info> EditState(int state);

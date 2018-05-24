@@ -31,10 +31,6 @@ namespace MemberMgmt.Services
             return await _repository.GetOrderState(memberId);
         }
 
-        internal async Task<String> Test(string input)
-        {
-            return await _repository.Test(input);
-        }
 
     }
 }

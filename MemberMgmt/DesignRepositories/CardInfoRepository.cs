@@ -39,9 +39,5 @@ namespace MemberMgmt.DesignRepositories
             throw new NotImplementedException();
         }
 
-        public Task<string> Test(string input)
-        {
-            throw new NotImplementedException();
-        }
     }
 }

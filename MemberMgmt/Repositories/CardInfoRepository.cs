@@ -17,9 +17,15 @@ namespace MemberMgmt.Repositories
             using (var client = new HttpClient())
             {
                 client.BaseAddress = new Uri(Properties.Settings.Default.ApiBaseUrl);
-                var responseMessage = await client.PostAsJsonAsync("client/verify", "{'info':'" + qrCode + "'}");
+                var keyValuePairs = new[]{
+                    new KeyValuePair<string, string>("info",qrCode)
+                };
+                var content = new FormUrlEncodedContent(keyValuePairs);
+                var responseMessage = await client.PostAsync("client/verify", content);
+                //var info = await responseMessage.Content.ReadAsStringAsync();
                 var info = await responseMessage.Content.ReadAsAsync<Info>();
                 return info;
+                //return new Info();
             }
         }
 
@@ -28,7 +34,12 @@ namespace MemberMgmt.Repositories
             using (var client = new HttpClient())
             {
                 client.BaseAddress = new Uri(Properties.Settings.Default.ApiBaseUrl);
-                var responseMessage = await client.PostAsJsonAsync("client/search", "{'memberName':'" + memberName + "','memberPhone':'" + mobile + "'}");
+                var keyValuePairs = new[]{
+                    new KeyValuePair<string, string>("memberName",memberName),
+                     new KeyValuePair<string, string>("memberPhone",mobile)
+                };
+                var content = new FormUrlEncodedContent(keyValuePairs);
+                var responseMessage = await client.PostAsync("client/search", content);
                 var info = await responseMessage.Content.ReadAsAsync<Info>();
                 return info;
             }
@@ -39,7 +50,11 @@ namespace MemberMgmt.Repositories
             using (var client = new HttpClient())
             {
                 client.BaseAddress = new Uri(Properties.Settings.Default.ApiBaseUrl);
-                var responseMessage = await client.PostAsJsonAsync("card/edit/state", "{'state':'" + state + "'}");
+                var keyValuePairs = new[]{
+                    new KeyValuePair<string, string>("state",state.ToString())
+                };
+                var content = new FormUrlEncodedContent(keyValuePairs);
+                var responseMessage = await client.PostAsync("card/edit/state", content);
                 var info = await responseMessage.Content.ReadAsAsync<Info>();
                 return info;
             }
@@ -50,20 +65,15 @@ namespace MemberMgmt.Repositories
             using (var client = new HttpClient())
             {
                 client.BaseAddress = new Uri(Properties.Settings.Default.ApiBaseUrl);
-                var responseMessage = await client.PostAsJsonAsync("client/order/verify", "{'memberId':'" + memberId + "'}");
+                var keyValuePairs = new[]{
+                    new KeyValuePair<string, string>("memberId",memberId)
+                };
+                var content = new FormUrlEncodedContent(keyValuePairs);
+                var responseMessage = await client.PostAsync("client/order/verify", content);
                 var str = await responseMessage.Content.ReadAsStringAsync();
                 return str;
             }
         }
 
-        public async Task<string> Test(string input)
-        {
-            //client?info=1231
-            using (var client = new HttpClient())
-            {
-                client.BaseAddress = new Uri(Properties.Settings.Default.ApiBaseUrl);
-                return await client.GetStringAsync("client?info="+input);
-            }
-        }
     }
 }
