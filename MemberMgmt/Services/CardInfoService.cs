@@ -34,11 +34,11 @@ namespace MemberMgmt.Services
         {
             return await _repository.GetOne(memberName, mobile);
         }
-        internal async Task<Info> EditState(int state)
+        internal async Task<Info> EditState(string memberId, int state)
         {
-            return await _repository.EditState(state);
+            return await _repository.EditState(memberId,state);
         }
-        internal async Task<String> GetOrderState(string memberId)
+        internal async Task<Info> GetOrderState(string memberId)
         {
             return await _repository.GetOrderState(memberId);
         }

@@ -101,21 +101,27 @@ namespace MemberMgmt.ViewModels
 
         RelayCommand _openCardCommand;
         /// <summary>
-        /// 开卡
+        /// 开卡命令
         /// </summary>
         public RelayCommand OpenCardCommand
         {
             get
             {
-                return _openCardCommand ?? (_openCardCommand = new RelayCommand(() =>
+                return _openCardCommand ?? (_openCardCommand = new RelayCommand(async () =>
                 {
-                    MessageBox.Show("开卡");
+                    if (string.IsNullOrWhiteSpace(CardInfo.Id))
+                    {
+                        Message = "无会员ID";
+                        return;
+                    }
+                    var info = await _cardInfoService.EditState(CardInfo.Id,1);
+                    Message = info.Message;
                 }));
             }
         }
         RelayCommand _scanQrCodeCommand;
         /// <summary>
-        /// 扫码
+        /// 扫码命令
         /// </summary>
         public RelayCommand ScanQrCodeCommand
         {
@@ -223,7 +229,7 @@ namespace MemberMgmt.ViewModels
         }
         RelayCommand _searchCommand;
         /// <summary>
-        /// 搜索
+        /// 搜索命令
         /// </summary>
         public RelayCommand SearchCommand
         {
@@ -233,10 +239,11 @@ namespace MemberMgmt.ViewModels
                 {
                     if (string.IsNullOrWhiteSpace(SearchInfo.Name) && string.IsNullOrWhiteSpace(SearchInfo.Mobile))
                     {
-                        MessageBox.Show("搜索条件至少填一项");
+                        Message="搜索条件至少填一项";
                         return;
                     }
-                    Info info = await _cardInfoService.GetOne(SearchInfo.Name, SearchInfo.Mobile);
+                    Info info = await _cardInfoService.GetOne(SearchInfo.Name,SearchInfo.Mobile);
+                    Message = info.Message;
                     LoadData(info);
                 }));
             }
@@ -256,7 +263,25 @@ namespace MemberMgmt.ViewModels
                 }));
             }
         }
+        RelayCommand _checkPurchase;
 
+        public RelayCommand CheckPurchase
+        {
+            get
+            {
+                return _checkPurchase ?? (_checkPurchase = new RelayCommand(async () =>
+                {
+                    if (string.IsNullOrWhiteSpace(CardInfo.Id))
+                    {
+                        Message = "无会员ID";
+                        return;
+                    }
+                    var info = await _cardInfoService.GetOrderState(CardInfo.Id);
+                    Message = info.Message;
+            
+                }));
+            }
+        }
 
         string Decoder()
         {
@@ -284,12 +309,20 @@ namespace MemberMgmt.ViewModels
             CardInfo.NoConsumption = info?.Member?.NoConsumption?.ToString() ?? "";
             var step = info?.Member?.Step;
             CardInfo.RealNameState = step == 3 ? "已认证" : step == null ? "" : "未认证";
-
-
+            
+            if (info.Ref == "2")
+            {
+                Message = info.Message;
+                return;
+            }
+            CardInfo.Name = info.Member.UserName;
+            CardInfo.SeatInfo = info.SeatsInfo;
+            CardInfo.Mobile = info.Member.Mobile;
+            CardInfo.NoConsumption = info.Member.NoConsumption.ToString();
+            CardInfo.Id = info.Member.Id;
             bool cardIsNull = info.Card == null;
             CardInfo.State = cardIsNull ? "" : info.Card.MyMemberPossessCard.State == 1 ? "正常" : info.Card.MyMemberPossessCard.State == 2 ? "卡失效" : "卡待开启";
             CardInfo.CardNum = cardIsNull ? "" : info.Card.MyMemberPossessCard.CardNum;
-            CardInfo.Name = cardIsNull ? "" : info.Member.UserName;
             CardInfo.StartDate = cardIsNull ? "" : info.Card.MyMemberPossessCard.BuyTime;
             CardInfo.EndDate = cardIsNull ? "" : info.Card.MyMemberPossessCard.LoseTime;
             CardInfo.CardType = cardIsNull ? "" : info.Card.Name;
@@ -308,6 +341,12 @@ namespace MemberMgmt.ViewModels
         public CardInfoViewModel()
         {
             //PhotoUrl = new Uri("http://imgsrc.baidu.com/image/c0%3Dshijue1%2C0%2C0%2C294%2C40/sign=23af0bb406f431ada8df4b7a235fc6da/caef76094b36acafbfc578da76d98d1001e99ceb.jpg");
+        }
+        String _id;
+        public String Id
+        {
+            get { return _id; }
+            set { Set(ref _id, value); }
         }
         String _cardNum;
         public String CardNum

@@ -11,7 +11,7 @@ namespace MemberMgmt.IRepositories
     {
         Task<Info> GetOne(string qrCode,bool withConsume);
         Task<Info> GetOne(string memberName,string mobile);
-        Task<Info> EditState(int state);
-        Task<String> GetOrderState(string memberId);
+        Task<Info> EditState(string memberId, int state);
+        Task<Info> GetOrderState(string memberId);
     }
 }

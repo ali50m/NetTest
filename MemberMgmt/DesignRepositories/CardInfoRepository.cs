@@ -29,12 +29,12 @@ namespace MemberMgmt.DesignRepositories
             throw new NotImplementedException();
         }
 
-        public Task<Info> EditState(int state)
+        public Task<Info> EditState(string memberId, int state)
         {
             throw new NotImplementedException();
         }
 
-        public Task<string> GetOrderState(string memberId)
+        public Task<Info> GetOrderState(string memberId)
         {
             throw new NotImplementedException();
         }

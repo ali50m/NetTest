@@ -46,12 +46,13 @@ namespace MemberMgmt.Repositories
             }
         }
 
-        public async Task<Info> EditState(int state)
+        public async Task<Info> EditState(string memberId, int state)
         {
             using (var client = new HttpClient())
             {
                 client.BaseAddress = new Uri(Properties.Settings.Default.ApiBaseUrl);
                 var keyValuePairs = new[]{
+                    new KeyValuePair<string, string>("memberId",memberId),
                     new KeyValuePair<string, string>("state",state.ToString())
                 };
                 var content = new FormUrlEncodedContent(keyValuePairs);
@@ -61,7 +62,7 @@ namespace MemberMgmt.Repositories
             }
         }
 
-        public async Task<string> GetOrderState(string memberId)
+        public async Task<Info> GetOrderState(string memberId)
         {
             using (var client = new HttpClient())
             {
@@ -71,8 +72,8 @@ namespace MemberMgmt.Repositories
                 };
                 var content = new FormUrlEncodedContent(keyValuePairs);
                 var responseMessage = await client.PostAsync("client/order/verify", content);
-                var str = await responseMessage.Content.ReadAsStringAsync();
-                return str;
+                var info = await responseMessage.Content.ReadAsAsync<Info>();
+                return info;
             }
         }
 
