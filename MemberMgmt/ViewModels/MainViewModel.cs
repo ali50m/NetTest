@@ -21,8 +21,8 @@ namespace MemberMgmt.ViewModels
         {
             _cardInfoService = cardInfoService;
             _vbarapi = vbarapi;
-            _vbarapi.addCodeFormat((byte)1);
             _vbarapi.openDevice(1);
+            _vbarapi.addCodeFormat((byte)1);
             _vbarapi.backlight(false);
             CardInfo = cardInfo;
             SearchInfo = searchInfo;
@@ -87,8 +87,8 @@ namespace MemberMgmt.ViewModels
                     });
                     if (!string.IsNullOrEmpty(str))
                     {
-                        var str1 = await _cardInfoService.Test(str);
-                        MessageBox.Show(str1);
+                        //var str1 = await _cardInfoService.Test(str);
+                        MessageBox.Show(str);
                         //LoadData(str);
                     }
                 }));
@@ -103,7 +103,7 @@ namespace MemberMgmt.ViewModels
             {
                 string msg = System.Text.Encoding.Default.GetString(result);
                 byte[] buffer = Encoding.UTF8.GetBytes(msg);
-                sResult = Encoding.UTF8.GetString(buffer, 0, buffer.Length);
+                sResult = Encoding.UTF8.GetString(buffer, 0, size);
             }
             else
             {
@@ -119,7 +119,7 @@ namespace MemberMgmt.ViewModels
             CardInfo.StartDate = info.Card.StartTime.ToString("yyyy-MM-dd");
             CardInfo.EndDate = info.Card.EndTime.ToString("yyyy-MM-dd");
             CardInfo.SeatInfos.Clear();
-            info.Seats.ForEach(m => CardInfo.SeatInfos.Add(m.Row+m.RowIndex+m.SiteInfo));
+            info.Seats.ForEach(m => CardInfo.SeatInfos.Add(m.Row + m.RowIndex + m.SiteInfo));
         }
 
         public override void Cleanup()
@@ -183,7 +183,7 @@ namespace MemberMgmt.ViewModels
             get { return _endDate; }
             set { Set(ref _endDate, value); }
         }
-        public ObservableCollection<String> SeatInfos { get; private set; } 
+        public ObservableCollection<String> SeatInfos { get; private set; }
 
     }
     class SearchInfoViewModel : ViewModelBase
@@ -213,5 +213,5 @@ namespace MemberMgmt.ViewModels
             }
         }
     }
-    
+
 }

@@ -28,6 +28,9 @@
                 </Setter.Value>
             </Setter>
         </Style>
+        <Style x:Key="fontStyle" TargetType="TextBlock">
+            <Setter Property="FontSize" Value="20px"></Setter>
+        </Style>
     </Window.Resources>
     <Border CornerRadius="10" Background="White" BorderBrush="#FF9E9E9E">
         <DockPanel Margin="3,0,3,0">
@@ -80,10 +83,14 @@
                         <TextBox Width="150" VerticalAlignment="Top" Text="{Binding CardInfo.Mobile}" TextWrapping="Wrap" Margin="382,99,0,0" IsEnabled="False" Height="30" HorizontalAlignment="Left" FontSize="20" />
 
                         <TextBox Width="150" VerticalAlignment="Top" Text="{Binding CardInfo.Name}" TextWrapping="Wrap" Margin="382,52,0,0" IsEnabled="False" Height="30" HorizontalAlignment="Left" FontSize="20" />
-
-                        <TextBlock x:Name="textBlock" Text="会员卡大图" HorizontalAlignment="Left" TextWrapping="Wrap" VerticalAlignment="Top" Height="46" Width="192" Margin="50,83,0,0" FontSize="30"/>
+                        <Border Margin="50,67,743.4,35" BorderBrush="#FF5F25DF" BorderThickness="1">
+                            <Grid>
+                                <TextBlock x:Name="textBlock" Text="会员卡大图" TextWrapping="Wrap"  Height="46" Width="156" FontSize="30"/>
+                                <Image HorizontalAlignment="Left" Height="142"  VerticalAlignment="Top"/>
+                            </Grid>
+                        </Border>
                         <TextBlock x:Name="textBlock_Copy1" Text="手机" HorizontalAlignment="Left" Margin="279,100,0,0" TextWrapping="Wrap" VerticalAlignment="Top" Height="30" Background="#FFF981CE" FontSize="20" Width="80"/>
-                        <TextBlock x:Name="textBlock_Copy2" Text="会员姓名" HorizontalAlignment="Left" Margin="279,52,0,0" TextWrapping="Wrap" VerticalAlignment="Top" Height="30" Background="#FFF981CE" FontSize="20" Width="80"/>
+                        <TextBlock Style="{StaticResource fontStyle}" x:Name="textBlock_Copy2" Text="会员姓名" HorizontalAlignment="Left" Margin="279,52,0,0" TextWrapping="Wrap" VerticalAlignment="Top" Height="30" Background="#FFF981CE" FontSize="20" Width="80"/>
                         <TextBlock x:Name="textBlock_Copy4" Text="性别" HorizontalAlignment="Left" Margin="285,152,0,0" TextWrapping="Wrap" VerticalAlignment="Top" Height="30" Background="#FFF981CE" FontSize="20" Width="80"/>
                         <ListBox Margin="560,30,19.4,23" FontSize="20">
                             <ListBox.ItemTemplate>
@@ -91,18 +98,19 @@
                                     <TextBlock></TextBlock>
                                 </DataTemplate>
                             </ListBox.ItemTemplate>
-                        </ListBox>                       <Grid Margin="21,27,19,36" Background="#FFEEE41F" Grid.Row="1">
+                        </ListBox>
+                        <Grid Margin="21,27,19,36" Background="#FFEEE41F" Grid.Row="1">
                             <TextBox HorizontalAlignment="Left" Height="30" Margin="134,53,0,52.4" TextWrapping="Wrap" Text="{Binding CardInfo.State}" VerticalAlignment="Center" Width="100" IsEnabled="False" FontSize="20"/>
                             <TextBox HorizontalAlignment="Left" Height="30" Margin="362,0,0,0" TextWrapping="Wrap" Text="{Binding CardInfo.CardType}" VerticalAlignment="Center" Width="100" IsEnabled="False" FontSize="20"/>
                             <TextBox HorizontalAlignment="Left" Height="30" Margin="597,53,0,52.4" TextWrapping="Wrap" Text="{Binding CardInfo.StartDate}" VerticalAlignment="Center" Width="100" IsEnabled="False" FontSize="20"/>
                             <TextBox HorizontalAlignment="Left" Height="30" Margin="817,0,0,0" TextWrapping="Wrap" Text="{Binding CardInfo.EndDate}" VerticalAlignment="Center" Width="100" IsEnabled="False" FontSize="20"/>
                             <TextBlock x:Name="textBlock_Copy5" Text="卡状态" HorizontalAlignment="Left" TextWrapping="Wrap" VerticalAlignment="Center" Height="30" Background="#FFF981CE" Margin="50,53,0,52.4" FontSize="20" Width="72"/>
                             <TextBlock x:Name="textBlock_Copy6" Text="会员卡类型" HorizontalAlignment="Left" Margin="249,53,0,52.4" TextWrapping="Wrap" VerticalAlignment="Center" Height="30" Background="#FFF981CE" FontSize="20" Width="108"/>
-                            <TextBlock x:Name="textBlock_Copy7" Text="卡开启时间" HorizontalAlignment="Left" Margin="476,53,0,52.4" TextWrapping="Wrap" VerticalAlignment="Center" Height="30" Background="#FFF981CE" FontSize="20" Width="101"/>
+                            <TextBlock x:Name="textBlock_Copy7" Text="卡开启时间" HorizontalAlignment="Left" Margin="476,53,0,52.4" TextWrapping="Wrap" VerticalAlignment="Center" Height="30" Background="#FFF981CE" FontSize="20" Width="101" Style="{DynamicResource fontStyle}"/>
                             <TextBlock x:Name="textBlock_Copy8" Text="卡到期时间" HorizontalAlignment="Left" Margin="710,53,0,52.4" TextWrapping="Wrap" VerticalAlignment="Center" Height="30" Background="#FFF981CE" FontSize="20" Width="102"/>
 
                         </Grid>
-                        <DataGrid HorizontalAlignment="Left" VerticalAlignment="Top"/>
+
                     </Grid>
                 </Grid>
             </Grid>
