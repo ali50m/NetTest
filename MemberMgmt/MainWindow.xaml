@@ -53,7 +53,7 @@
                     <ColumnDefinition/>
                 </Grid.ColumnDefinitions>
                 <Grid Margin="82,6,70,19" Grid.Row="1">
-                    <Button Width="150" VerticalAlignment="Top" x:Name="textBlock_Copy15" Margin="0,24,76,0" Height="30" HorizontalAlignment="Right" Content="服务器通讯状态" Background="#FFF06AD7" FontSize="20"      />
+                    <Button Width="150" VerticalAlignment="Top" x:Name="textBlock_Copy15" Margin="0,24,76,0" Height="30" HorizontalAlignment="Right" Content="服务器通讯状态" Background="#FFF06AD7" FontSize="20" Command="{Binding CheckServerCommand, Mode=OneWay}" />
                     <TextBlock Width="357" VerticalAlignment="Top" Text="{Binding Message}" TextWrapping="Wrap" x:Name="textBlock_Copy14" Margin="0,14,263.6,0" Height="50" HorizontalAlignment="Right" Background="#FF6786C7" FontSize="20"  />
                     <Button Width="80" VerticalAlignment="Top" x:Name="textBlock_Copy13" Margin="324,24,0,0" Height="30" HorizontalAlignment="Left" Command="{Binding OpenCardCommand, Mode=OneWay}" Content="开卡" Background="#FFF5CC40" FontSize="20"  />
                     <TextBlock VerticalAlignment="Top" Text="当前会员卡号" TextWrapping="Wrap" x:Name="textBlock_Copy12" Height="30" HorizontalAlignment="Left" Background="#FFE04CD9" FontSize="20" Width="126" Margin="0,24,0,0"     />

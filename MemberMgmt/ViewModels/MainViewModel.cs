@@ -107,17 +107,28 @@ namespace MemberMgmt.ViewModels
             {
                 return _searchCommand ?? (_searchCommand = new RelayCommand(async () =>
                 {
-                    if (string.IsNullOrWhiteSpace(SearchInfo.Name)&&string.IsNullOrWhiteSpace(SearchInfo.Mobile))
+                    if (string.IsNullOrWhiteSpace(SearchInfo.Name) && string.IsNullOrWhiteSpace(SearchInfo.Mobile))
                     {
                         MessageBox.Show("搜索条件至少填一项");
                         return;
                     }
-                    Info info = await _cardInfoService.GetOne(SearchInfo.Name,SearchInfo.Mobile);
+                    Info info = await _cardInfoService.GetOne(SearchInfo.Name, SearchInfo.Mobile);
                     LoadData(info);
                 }));
             }
         }
 
+        RelayCommand _checkServerCommand;
+        public RelayCommand CheckServerCommand
+        {
+            get
+            {
+                return _checkServerCommand ?? (_checkServerCommand = new RelayCommand(async () =>
+                {
+                    throw new NotImplementedException("检查服务器状态未实现");
+                }));
+            }
+        }
 
 
         string Decoder()
@@ -139,7 +150,7 @@ namespace MemberMgmt.ViewModels
         }
         void LoadData(Info info)
         {
-            
+
             if (info.Ref == "2")
             {
                 Message = info.Message;
