@@ -17,13 +17,15 @@ namespace MemberMgmt.ViewModels
     {
         readonly CardInfoService _cardInfoService;
         readonly Vbarapi _vbarapi;
-        public MainViewModel(CardInfoService cardInfoService, Vbarapi vbarapi, CardInfoViewModel cardInfo, SearchInfoViewModel searchInfo)
+        readonly Reader _rfidReader;
+        public MainViewModel(CardInfoService cardInfoService, Vbarapi vbarapi, Reader rfidReader, CardInfoViewModel cardInfo, SearchInfoViewModel searchInfo)
         {
             _cardInfoService = cardInfoService;
             _vbarapi = vbarapi;
             _vbarapi.openDevice(1);
             _vbarapi.addCodeFormat((byte)1);
             _vbarapi.backlight(false);
+            _rfidReader = rfidReader;
             CardInfo = cardInfo;
             SearchInfo = searchInfo;
             if (IsInDesignMode)
@@ -39,12 +41,26 @@ namespace MemberMgmt.ViewModels
         public CardInfoViewModel CardInfo { get; private set; }
         public SearchInfoViewModel SearchInfo { get; private set; }
         String _message;
+        /// <summary>
+        /// 操作完成的信息
+        /// </summary>
         public String Message
         {
             get { return _message; }
             set { Set(ref _message, value); }
         }
+        string _rfidMemberNo;
+        //Rfid里存的会员号
+        public String RfidMemberNo
+        {
+            get { return _rfidMemberNo; }
+            set { Set(ref _rfidMemberNo, value); }
+        }
+
         bool _scanQrCodeEnable = true;
+        /// <summary>
+        /// 可否扫码
+        /// </summary>
         public bool ScanQrCodeEnable
         {
             get { return _scanQrCodeEnable; }
@@ -52,7 +68,9 @@ namespace MemberMgmt.ViewModels
         }
 
         RelayCommand _openCardCommand;
-
+        /// <summary>
+        /// 开卡
+        /// </summary>
         public RelayCommand OpenCardCommand
         {
             get
@@ -64,7 +82,9 @@ namespace MemberMgmt.ViewModels
             }
         }
         RelayCommand _scanQrCodeCommand;
-
+        /// <summary>
+        /// 扫码
+        /// </summary>
         public RelayCommand ScanQrCodeCommand
         {
             get
@@ -99,8 +119,34 @@ namespace MemberMgmt.ViewModels
                 }));
             }
         }
+        RelayCommand _readCardCommand;
+        public RelayCommand ReadCardCommand
+        {
+            get
+            {
+                return _readCardCommand ?? (_readCardCommand = new RelayCommand(() =>
+                {
+                    var rfidInfo = _rfidReader.ReadCard();
+                    MessageBox.Show("卡数据："+ rfidInfo.MemberNo);
+                }));
+            }
+        }
+        RelayCommand _writeCardCommand;
+        public RelayCommand WriteCardCommand
+        {
+            get
+            {
+                return _writeCardCommand ?? (_writeCardCommand = new RelayCommand(() =>
+                {
+                    var rfidInfo = _rfidReader.WriteCard(new RfidInfo { MemberNo= RfidMemberNo });
+                    MessageBox.Show("写卡成功");
+                }));
+            }
+        }
         RelayCommand _searchCommand;
-
+        /// <summary>
+        /// 搜索
+        /// </summary>
         public RelayCommand SearchCommand
         {
             get
@@ -119,13 +165,16 @@ namespace MemberMgmt.ViewModels
         }
 
         RelayCommand _checkServerCommand;
+        /// <summary>
+        /// 检查服务器状态
+        /// </summary>
         public RelayCommand CheckServerCommand
         {
             get
             {
-                return _checkServerCommand ?? (_checkServerCommand = new RelayCommand(async () =>
+                return _checkServerCommand ?? (_checkServerCommand = new RelayCommand(() =>
                 {
-                    throw new NotImplementedException("检查服务器状态未实现");
+                    //throw new NotImplementedException("检查服务器状态未实现");
                 }));
             }
         }

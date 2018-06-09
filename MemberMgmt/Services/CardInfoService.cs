@@ -14,10 +14,21 @@ namespace MemberMgmt.Services
             _repository = repository;
         }
         IRepositories.ICardInfoRepository _repository;
+        /// <summary>
+        /// 用二维码字符串查询会员信息
+        /// </summary>
+        /// <param name="qrCode"></param>
+        /// <returns></returns>
         internal async Task<Info> GetOne(string qrCode)
         {
             return await _repository.GetOne(qrCode);
         }
+        /// <summary>
+        /// 用会员名或手机号查会员信息
+        /// </summary>
+        /// <param name="memberName"></param>
+        /// <param name="mobile"></param>
+        /// <returns></returns>
         internal async Task<Info> GetOne(string memberName, string mobile)
         {
             return await _repository.GetOne(memberName, mobile);
