@@ -230,8 +230,10 @@ namespace MemberMgmt.ViewModels
                 return;
             }
             CardInfo.SeatInfo = info.SeatsInfo;
+            CardInfo.PhotoUrl = new Uri( string.IsNullOrEmpty(info.Photo)? "http://imgsrc.baidu.com/image/c0%3Dshijue1%2C0%2C0%2C294%2C40/sign=23af0bb406f431ada8df4b7a235fc6da/caef76094b36acafbfc578da76d98d1001e99ceb.jpg" : info.Photo);
             CardInfo.Mobile = info.Member.Mobile;
             CardInfo.NoConsumption = info.Member.NoConsumption.ToString();
+            CardInfo.RealNameState = info.Member.Step == 3 ? "已认证" : "未认证";
             bool cardIsNull = info.Card == null;
 
             CardInfo.State = cardIsNull ? "" : info.Card.MyMemberPossessCard.State == 1 ? "正常" : info.Card.MyMemberPossessCard.State == 2 ? "卡失效" : "";
@@ -252,13 +254,19 @@ namespace MemberMgmt.ViewModels
     {
         public CardInfoViewModel()
         {
-
+            PhotoUrl = new Uri( "http://imgsrc.baidu.com/image/c0%3Dshijue1%2C0%2C0%2C294%2C40/sign=23af0bb406f431ada8df4b7a235fc6da/caef76094b36acafbfc578da76d98d1001e99ceb.jpg");
         }
         String _cardNum;
         public String CardNum
         {
             get { return _cardNum; }
             set { Set(ref _cardNum, value); }
+        }
+        Uri _photoUrl;
+        public Uri PhotoUrl
+        {
+            get { return _photoUrl; }
+            set { Set(ref _photoUrl, value); }
         }
         String _name;
         public String Name
@@ -273,11 +281,11 @@ namespace MemberMgmt.ViewModels
             get { return _mobile; }
             set { Set(ref _mobile, value); }
         }
-        String _gender;
-        public String Gender
+        String _realNameState;
+        public String RealNameState
         {
-            get { return _gender; }
-            set { Set(ref _gender, value); }
+            get { return _realNameState; }
+            set { Set(ref _realNameState, value); }
         }
         String _state;
         public String State

@@ -13,7 +13,7 @@ namespace MemberMgmt.Models
         public String SeatsInfo { get; set; }
         public Member Member { get; set; }
         public Card Card { get; set; }
-
+        public string Photo { get; set; }
     }
 
     /*
