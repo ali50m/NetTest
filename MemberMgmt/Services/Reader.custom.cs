@@ -8,6 +8,9 @@ using System.Threading.Tasks;
 
 namespace MemberMgmt.Services
 {
+    /// <summary>
+    /// Rfid读卡工具
+    /// </summary>
     partial class Reader
     {
         //KeyA是0，KeyB是1

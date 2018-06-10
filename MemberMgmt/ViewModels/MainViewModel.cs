@@ -113,7 +113,8 @@ namespace MemberMgmt.ViewModels
                     });
                     if (!string.IsNullOrEmpty(str))
                     {
-                        Info info = await _cardInfoService.GetOne("88336632114782");
+                        //Info info = await _cardInfoService.GetOne("88336632114782");
+                        Info info = await _cardInfoService.GetOne("8820180633");
                         LoadData(info);
                     }
                 }));
@@ -124,10 +125,33 @@ namespace MemberMgmt.ViewModels
         {
             get
             {
-                return _readCardCommand ?? (_readCardCommand = new RelayCommand(() =>
+                return _readCardCommand ?? (_readCardCommand = new RelayCommand(async () =>
                 {
-                    var rfidInfo = _rfidReader.ReadCard();
-                    MessageBox.Show("卡数据："+ rfidInfo.MemberNo);
+
+                    ScanQrCodeEnable = false;
+                    var str = await Task.Run(() =>
+                    {
+                        var s = "";
+                        for (var i = 0; i < 500; i++)
+                        {
+                            //Rfid读卡获取
+                            var rfidInfo = _rfidReader.ReadCard();
+                            if (!string.IsNullOrEmpty(rfidInfo.MemberNo))
+                            {
+                                s = rfidInfo.MemberNo;
+                                break;
+                            }
+                            Thread.Sleep(50);
+                        }
+                        ScanQrCodeEnable = true;
+                        return s;
+                    });
+                    if (!string.IsNullOrEmpty(str))
+                    {
+                        //MessageBox.Show("卡数据："+ str);
+                        Info info = await _cardInfoService.GetOne(str);
+                        LoadData(info);
+                    }
                 }));
             }
         }
@@ -138,7 +162,7 @@ namespace MemberMgmt.ViewModels
             {
                 return _writeCardCommand ?? (_writeCardCommand = new RelayCommand(() =>
                 {
-                    var rfidInfo = _rfidReader.WriteCard(new RfidInfo { MemberNo= RfidMemberNo });
+                    var rfidInfo = _rfidReader.WriteCard(new RfidInfo { MemberNo = RfidMemberNo });
                     MessageBox.Show("写卡成功");
                 }));
             }

@@ -16,6 +16,9 @@ namespace MemberMgmt.Models
         public string MemberNo
         {
             get {
+                if (Data==null) {
+                    return "";
+                }
                 return Encoding.Default.GetString(Data);
             }
             set
