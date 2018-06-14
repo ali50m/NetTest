@@ -10,6 +10,7 @@ using System.Threading;
 using System.Threading.Tasks;
 using System.Windows;
 using System.Windows.Controls;
+using System.Windows.Media.Imaging;
 
 namespace MemberMgmt.ViewModels
 {
@@ -34,7 +35,7 @@ namespace MemberMgmt.ViewModels
             }
             else
             {
-
+                
             }
         }
 
@@ -223,25 +224,24 @@ namespace MemberMgmt.ViewModels
         }
         void LoadData(Info info)
         {
+            Message = info?.Message??"";
+            CardInfo.SeatInfo = info?.SeatsInfo??"";
+            CardInfo.PhotoSource = string.IsNullOrEmpty(info.Photo)? new BitmapImage(): new BitmapImage( new Uri(info.Photo));
+            CardInfo.Mobile = info?.Member?.Mobile??"";
+            CardInfo.NoConsumption = info?.Member?.NoConsumption?.ToString()??"";
+            var step = info?.Member?.Step;
+            CardInfo.RealNameState = step == 3 ? "已认证" :step==null?"": "未认证";
 
-            if (info.Ref == "2")
+            if (info.Ref != "2")
             {
-                Message = info.Message;
-                return;
+                bool cardIsNull = info.Card == null;
+                CardInfo.State = cardIsNull ? "" : info.Card.MyMemberPossessCard.State == 1 ? "正常" : info.Card.MyMemberPossessCard.State == 2 ? "卡失效" : "";
+                CardInfo.CardNum = cardIsNull ? "" : info.Card.MyMemberPossessCard.CardNum;
+                CardInfo.Name = cardIsNull ? "" : info.Member.UserName;
+                CardInfo.StartDate = cardIsNull ? "" : info.Card.MyMemberPossessCard.BuyTime;
+                CardInfo.EndDate = cardIsNull ? "" : info.Card.MyMemberPossessCard.LoseTime;
+                CardInfo.CardType = cardIsNull ? "" : info.Card.Name;
             }
-            CardInfo.SeatInfo = info.SeatsInfo;
-            CardInfo.PhotoUrl = new Uri( string.IsNullOrEmpty(info.Photo)? "http://imgsrc.baidu.com/image/c0%3Dshijue1%2C0%2C0%2C294%2C40/sign=23af0bb406f431ada8df4b7a235fc6da/caef76094b36acafbfc578da76d98d1001e99ceb.jpg" : info.Photo);
-            CardInfo.Mobile = info.Member.Mobile;
-            CardInfo.NoConsumption = info.Member.NoConsumption.ToString();
-            CardInfo.RealNameState = info.Member.Step == 3 ? "已认证" : "未认证";
-            bool cardIsNull = info.Card == null;
-
-            CardInfo.State = cardIsNull ? "" : info.Card.MyMemberPossessCard.State == 1 ? "正常" : info.Card.MyMemberPossessCard.State == 2 ? "卡失效" : "";
-            CardInfo.CardNum = cardIsNull ? "" : info.Card.MyMemberPossessCard.CardNum;
-            CardInfo.Name = cardIsNull ? "" : info.Member.UserName;
-            CardInfo.StartDate = cardIsNull ? "" : info.Card.MyMemberPossessCard.BuyTime;
-            CardInfo.EndDate = cardIsNull ? "" : info.Card.MyMemberPossessCard.LoseTime;
-            CardInfo.CardType = cardIsNull ? "" : info.Card.Name;
         }
 
         public override void Cleanup()
@@ -254,7 +254,7 @@ namespace MemberMgmt.ViewModels
     {
         public CardInfoViewModel()
         {
-            PhotoUrl = new Uri( "http://imgsrc.baidu.com/image/c0%3Dshijue1%2C0%2C0%2C294%2C40/sign=23af0bb406f431ada8df4b7a235fc6da/caef76094b36acafbfc578da76d98d1001e99ceb.jpg");
+            //PhotoUrl = new Uri("http://imgsrc.baidu.com/image/c0%3Dshijue1%2C0%2C0%2C294%2C40/sign=23af0bb406f431ada8df4b7a235fc6da/caef76094b36acafbfc578da76d98d1001e99ceb.jpg");
         }
         String _cardNum;
         public String CardNum
@@ -262,11 +262,11 @@ namespace MemberMgmt.ViewModels
             get { return _cardNum; }
             set { Set(ref _cardNum, value); }
         }
-        Uri _photoUrl;
-        public Uri PhotoUrl
+        BitmapSource _photoSource;
+        public BitmapSource PhotoSource
         {
-            get { return _photoUrl; }
-            set { Set(ref _photoUrl, value); }
+            get { return _photoSource; }
+            set { Set(ref _photoSource, value); }
         }
         String _name;
         public String Name

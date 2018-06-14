@@ -88,10 +88,7 @@
                         <Border Margin="50,67,743.4,35" BorderBrush="#FF5F25DF" BorderThickness="1">
                             <Grid>
                                 <TextBlock x:Name="textBlock" Text="生活照" TextWrapping="Wrap"  Height="46" FontSize="30" Margin="53,49,58,49"/>
-                                <Image HorizontalAlignment="Left" Height="142"  VerticalAlignment="Top" Width="203" Stretch="Fill">
-                                    <Image.Source>
-                                        <BitmapImage UriSource="{Binding CardInfo.PhotoUrl}"></BitmapImage>
-                                    </Image.Source>
+                                <Image HorizontalAlignment="Left" Height="142"  VerticalAlignment="Top" Width="203" Stretch="Fill" Source="{Binding CardInfo.PhotoSource}">
                                 </Image>
                             </Grid>
                         </Border>
