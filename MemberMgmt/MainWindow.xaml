@@ -7,7 +7,7 @@
         xmlns:i="http://schemas.microsoft.com/expression/2010/interactivity" xmlns:Custom="http://www.galasoft.ch/mvvmlight" x:Class="MemberMgmt.MainWindow"
         mc:Ignorable="d"
          WindowStartupLocation="CenterScreen" Background="Transparent" 
-        Title="MainWindow" d:DesignWidth="1325" DataContext="{Binding Main, Mode=OneWay, Source={StaticResource Locator}}" AllowsTransparency="True" WindowStyle="None" Width="1328" Height="667.309" >
+        Title="MainWindow" DataContext="{Binding Main, Mode=OneWay, Source={StaticResource Locator}}" AllowsTransparency="True" WindowStyle="None" Width="1374.5" Height="715.309" >
     <!--<i:Interaction.Triggers>
         <i:EventTrigger EventName="KeyUp">
             <Custom:EventToCommand Command="{Binding CardInfo.ScanQRCodeCommand, Mode=OneWay}"/>
@@ -34,37 +34,37 @@
     </Window.Resources>
     <Border CornerRadius="10" Background="White" BorderBrush="#FF9E9E9E">
         <DockPanel Margin="3,0,3,0">
-            <Grid Height="30" DockPanel.Dock="Top" Background="#00000000">
+            <Grid Height="45" DockPanel.Dock="Top" Background="#00000000">
                 <i:Interaction.Triggers>
                     <i:EventTrigger EventName="MouseLeftButtonDown">
                         <i:InvokeCommandAction Command="{Binding DropMoveCommand, Mode=OneWay}" />
                     </i:EventTrigger>
                 </i:Interaction.Triggers>
-                <TextBlock Margin="10,6,0,0" HorizontalAlignment="Left" Width="74" Height="20" VerticalAlignment="Top">会员卡管理</TextBlock>
+                <TextBlock Margin="10,6,0,0" HorizontalAlignment="Left" Width="114" Height="28" VerticalAlignment="Top" FontSize="20">会员卡管理</TextBlock>
                 <Button Style="{StaticResource closeButtonStyle}" IsCancel="True" Width="20" Height="20"  Command="{Binding CloseWindowCommand, Mode=OneWay}" HorizontalAlignment="Right" Margin="0,3,3,0" />
             </Grid>
             <Grid Height="10" DockPanel.Dock="Bottom"/>
             <Grid Background="#FFA1C8FF">
                 <Grid.RowDefinitions>
-                    <RowDefinition Height="470*"/>
-                    <RowDefinition Height="157*"/>
+                    <RowDefinition Height="187*"/>
+                    <RowDefinition Height="35*"/>
                 </Grid.RowDefinitions>
                 <Grid.ColumnDefinitions>
                     <ColumnDefinition/>
                 </Grid.ColumnDefinitions>
-                <Grid Margin="82,6,70,19" Grid.Row="1">
-                    <TextBlock Width="289" VerticalAlignment="Top" Text="{Binding Message}" TextWrapping="Wrap" x:Name="textBlock_Copy14" Margin="0,14,188,0" Height="50" HorizontalAlignment="Right" Background="#FF6786C7" FontSize="20"  />
+                <TextBlock Width="955" VerticalAlignment="Top" Text="{Binding Message}" TextWrapping="Wrap" x:Name="textBlock_Copy14" Margin="0,14,340,0" Height="50" HorizontalAlignment="Right" Background="#FF6786C7" FontSize="20"  />
+                <StackPanel HorizontalAlignment="Left" VerticalAlignment="Bottom" Margin="42,0,0,14" Grid.Row="1" Height="64" Width="76">
+                    <RadioButton  Content="查询" HorizontalAlignment="Left" VerticalAlignment="Top"  FontSize="20" Command="{Binding ScanQrCodeFuncCommand, Mode=OneWay}" CommandParameter="query" IsChecked="True" Width="77" Height="32" />
+                    <RadioButton Content="消费" HorizontalAlignment="Left" VerticalAlignment="Top" FontSize="20" Command="{Binding ScanQrCodeFuncCommand, Mode=OneWay}" CommandParameter="consume" Width="74" Height="32"/>
+                </StackPanel>
+                <Grid Margin="192,0,66,10" Grid.Row="1" VerticalAlignment="Bottom" Height="68">
                     <Button Width="80" VerticalAlignment="Top" x:Name="textBlock_Copy13" Margin="324,24,0,0" Height="30" HorizontalAlignment="Left" Command="{Binding OpenCardCommand, Mode=OneWay}" Content="开卡" Background="#FFF5CC40" FontSize="20"  />
                     <TextBlock VerticalAlignment="Top" Text="当前会员卡号" TextWrapping="Wrap" x:Name="textBlock_Copy12" Height="30" HorizontalAlignment="Left" Background="#FFE04CD9" FontSize="20" Width="126" Margin="0,24,0,0"     />
                     <TextBox HorizontalAlignment="Left" Height="30" Margin="137,24,0,0" TextWrapping="Wrap" Text="{Binding CardInfo.CardNum}" VerticalAlignment="Top" Width="169" IsEnabled="False" FontSize="20"/>
-                    <Button Width="80" VerticalAlignment="Top" Margin="428,24,0,0" Height="30" HorizontalAlignment="Left" Command="{Binding ScanQrCodeCommand, Mode=OneWay}" Content="扫码" Background="#FFF5CC40" IsEnabled="{Binding ScanQrCodeEnable}" FontSize="20"  />
-                    <Button Width="80" VerticalAlignment="Top" Margin="536,24,0,0" Height="30" HorizontalAlignment="Left" Command="{Binding ReadCardCommand, Mode=OneWay}" Content="读卡" Background="#FFF5CC40" IsEnabled="{Binding ScanQrCodeEnable}" FontSize="20"  />
-                    <Button Width="80" VerticalAlignment="Top" Margin="536,80,0,0" Height="30" HorizontalAlignment="Left" Command="{Binding WriteCardCommand, Mode=OneWay}" Content="写卡" Background="#FFF5CC40" IsEnabled="{Binding ScanQrCodeEnable}" FontSize="20"  />
-                    <TextBox Margin="263,80,662,22" Text="{Binding RfidMemberNo}" FontSize="20"></TextBox>
-                    <StackPanel Margin="10,80,1004,10" Orientation="Horizontal">
-                        <RadioButton  Content="查询" HorizontalAlignment="Left" VerticalAlignment="Top"  FontSize="20" Command="{Binding ScanQrCodeFuncCommand, Mode=OneWay}" CommandParameter="query" IsChecked="True" Width="77" Height="32" />
-                        <RadioButton Content="消费" HorizontalAlignment="Left" VerticalAlignment="Top" FontSize="20" Command="{Binding ScanQrCodeFuncCommand, Mode=OneWay}" CommandParameter="consume" Width="74" Height="32"/>
-                    </StackPanel>
+                    <Button Width="180" VerticalAlignment="Top" Margin="678,0,0,0" Height="68" HorizontalAlignment="Left" Command="{Binding ScanQrCodeCommand, Mode=OneWay}" Content="扫码" Background="#FFF5CC40" IsEnabled="{Binding ScanQrCodeEnable}" FontSize="20"  />
+                    <Button Width="180" VerticalAlignment="Top" Margin="920,0,0,0" Height="68" HorizontalAlignment="Left" Command="{Binding ReadCardCommand, Mode=OneWay}" Content="读卡" Background="#FFF5CC40" IsEnabled="{Binding ScanQrCodeEnable}" FontSize="20"  />
+                    <Button Width="80" VerticalAlignment="Top" Margin="438,24,0,0" Height="30" HorizontalAlignment="Left" Command="{Binding WriteCardCommand, Mode=OneWay}" Content="写卡" Background="#FFF5CC40" IsEnabled="{Binding WriteCardEnable}" FontSize="20"  />
+                    <Button Width="80" VerticalAlignment="Top" Margin="537,24,0,0" Height="30" HorizontalAlignment="Left" Command="{Binding ClearFormCommand, Mode=OneWay}" Content="清除" Background="#FFF5CC40" FontSize="20"  />
                 </Grid>
                 <Grid>
                     <Grid.ColumnDefinitions>
@@ -78,41 +78,43 @@
                         <TextBox Width="150" VerticalAlignment="Top" Text="{Binding SearchInfo.Name}" TextWrapping="Wrap" Margin="60,126,0,0" Height="30" HorizontalAlignment="Left" FontSize="20"                      />
                         <TextBox Width="150" VerticalAlignment="Top" Text="{Binding SearchInfo.Mobile}" TextWrapping="Wrap" Margin="60,232,0,0" Height="30" HorizontalAlignment="Left" FontSize="20"                      />
                     </Grid>
-                    <Grid Margin="10" Background="#FFFB7B5F">
+                    <Grid Margin="10,98,10,10" Background="#FFFB7B5F">
                         <Grid.RowDefinitions>
                             <RowDefinition Height="242*"/>
                             <RowDefinition Height="197*"/>
                         </Grid.RowDefinitions>
-                        <TextBox Width="150" VerticalAlignment="Top" Text="{Binding CardInfo.NoConsumption}" TextWrapping="Wrap" Margin="696,51,0,0" IsEnabled="False" Height="30" HorizontalAlignment="Left" FontSize="20"   />
-
-                        <TextBox Width="150" VerticalAlignment="Top" Text="{Binding CardInfo.Mobile}" TextWrapping="Wrap" Margin="382,99,0,0" IsEnabled="False" Height="30" HorizontalAlignment="Left" FontSize="20" />
-
-                        <TextBox Width="150" VerticalAlignment="Top" Text="{Binding CardInfo.Name}" TextWrapping="Wrap" Margin="382,52,0,0" IsEnabled="False" Height="30" HorizontalAlignment="Left" FontSize="20" />
-                        <Border Margin="50,67,743.4,35" BorderBrush="#FF5F25DF" BorderThickness="1">
+                        <Border Margin="21,10,822,10" BorderBrush="#FF5F25DF" BorderThickness="1">
                             <Grid>
-                                <TextBlock x:Name="textBlock" Text="生活照" TextWrapping="Wrap"  Height="46" FontSize="30" Margin="53,49,58,49"/>
-                                <Image HorizontalAlignment="Left" Height="142"  VerticalAlignment="Top" Width="203" Stretch="Fill" Source="{Binding CardInfo.PhotoSource}">
-                                </Image>
+                                <TextBlock x:Name="textBlock" Text="生活照" TextWrapping="Wrap"  Height="46" FontSize="20" Margin="53,49,58,49"/>
+                                <Image Stretch="Fill" Source="{Binding CardInfo.PhotoSource}"/>
                             </Grid>
                         </Border>
-                        <TextBlock x:Name="textBlock_Copy1" Text="手机" HorizontalAlignment="Left" Margin="279,100,0,0" TextWrapping="Wrap" VerticalAlignment="Top" Height="30" Background="#FFF981CE" FontSize="20" Width="80"/>
-                        <TextBlock Style="{StaticResource fontStyle}" x:Name="textBlock_Copy2" Text="会员姓名" HorizontalAlignment="Left" Margin="279,52,0,0" TextWrapping="Wrap" VerticalAlignment="Top" Height="30" Background="#FFF981CE" FontSize="20" Width="80"/>
-                        <TextBlock x:Name="textBlock_Copy4" Text="异常次数" HorizontalAlignment="Left" Margin="599,52,0,0" TextWrapping="Wrap" VerticalAlignment="Top" Height="30" Background="#FFF981CE" FontSize="20" Width="80"/>
-                        <TextBlock  Text="座位信息" HorizontalAlignment="Left" Margin="279,179,0,0" TextWrapping="Wrap" VerticalAlignment="Top" Height="30" Background="#FFF981CE" FontSize="20" Width="80"/>
-                        <TextBox HorizontalAlignment="Left" Height="30" Margin="382,172,0,0" TextWrapping="Wrap" Text="{Binding CardInfo.SeatInfo}" VerticalAlignment="Top" Width="464" IsEnabled="False" FontSize="20"/>
                         <Grid Margin="21,27,19,36" Background="#FFEEE41F" Grid.Row="1">
                             <TextBox HorizontalAlignment="Left" Height="30" Margin="177,30,0,75.4" TextWrapping="Wrap" Text="{Binding CardInfo.State}" VerticalAlignment="Center" Width="141" IsEnabled="False" FontSize="20"/>
                             <TextBox HorizontalAlignment="Left" Height="30" Margin="177,78,0,27.4" TextWrapping="Wrap" Text="{Binding CardInfo.CardType}" VerticalAlignment="Center" Width="141" IsEnabled="False" FontSize="20"/>
                             <TextBox HorizontalAlignment="Left" Height="30" Margin="605,30,0,75.4" TextWrapping="Wrap" Text="{Binding CardInfo.StartDate}" VerticalAlignment="Center" Width="254" IsEnabled="False" FontSize="20"/>
                             <TextBox HorizontalAlignment="Left" Height="30" Margin="605,77,0,28.4" TextWrapping="Wrap" Text="{Binding CardInfo.EndDate}" VerticalAlignment="Center" Width="254" IsEnabled="False" FontSize="20"/>
-                            <TextBlock x:Name="textBlock_Copy5" Text="卡状态" HorizontalAlignment="Left" TextWrapping="Wrap" VerticalAlignment="Center" Height="30" Background="#FFF981CE" Margin="60,30,0,75.4" FontSize="20" Width="112"/>
-                            <TextBlock x:Name="textBlock_Copy6" Text="会员卡类型" HorizontalAlignment="Left" Margin="64,79,0,26.4" TextWrapping="Wrap" VerticalAlignment="Center" Height="30" Background="#FFF981CE" FontSize="20" Width="108"/>
-                            <TextBlock x:Name="textBlock_Copy7" Text="卡开启时间" HorizontalAlignment="Left" Margin="484,30,0,75.4" TextWrapping="Wrap" VerticalAlignment="Center" Height="30" Background="#FFF981CE" FontSize="20" Width="101" Style="{DynamicResource fontStyle}"/>
-                            <TextBlock x:Name="textBlock_Copy8" Text="卡到期时间" HorizontalAlignment="Left" Margin="484,78,0,27.4" TextWrapping="Wrap" VerticalAlignment="Center" Height="30" Background="#FFF981CE" FontSize="20" Width="102"/>
+                            <TextBlock x:Name="textBlock_Copy5" Text="卡状态" HorizontalAlignment="Left" TextWrapping="Wrap" VerticalAlignment="Top" Height="30" Background="#FFF981CE" Margin="60,30,0,75.4" FontSize="20" Width="112"/>
+                            <TextBlock x:Name="textBlock_Copy6" Text="会员卡类型" HorizontalAlignment="Left" Margin="64,79,0,26.4" TextWrapping="Wrap" VerticalAlignment="Top" Height="30" Background="#FFF981CE" FontSize="20" Width="108"/>
+                            <TextBlock x:Name="textBlock_Copy7" Text="卡开启时间" HorizontalAlignment="Left" Margin="484,30,0,75.4" TextWrapping="Wrap" VerticalAlignment="Top" Height="30" Background="#FFF981CE" FontSize="20" Width="101" Style="{DynamicResource fontStyle}"/>
+                            <TextBlock x:Name="textBlock_Copy8" Text="卡到期时间" HorizontalAlignment="Left" Margin="484,78,0,27.4" TextWrapping="Wrap" VerticalAlignment="Top" Height="30" Background="#FFF981CE" FontSize="20" Width="102"/>
 
                         </Grid>
-                        <TextBox Width="150" VerticalAlignment="Top" Text="{Binding CardInfo.RealNameState}" TextWrapping="Wrap" Margin="696,99,0,0" IsEnabled="False" Height="30" HorizontalAlignment="Left" FontSize="20" />
-                        <TextBlock Text="实名认证" HorizontalAlignment="Left" Margin="599,100,0,0" TextWrapping="Wrap" VerticalAlignment="Top" Height="30" Background="#FFF981CE" FontSize="20" Width="80"/>
+                        <Grid Margin="0,46,42,0" HorizontalAlignment="Right" VerticalAlignment="Top" Width="708">
+                            <TextBox Width="150" VerticalAlignment="Top" Text="{Binding CardInfo.NoConsumption}" TextWrapping="Wrap" Margin="418,0,0,0" IsEnabled="False" Height="30" HorizontalAlignment="Left" FontSize="20"   />
+
+                            <TextBox Width="150" VerticalAlignment="Top" Text="{Binding CardInfo.Mobile}" TextWrapping="Wrap" Margin="104,48,0,0" IsEnabled="False" Height="30" HorizontalAlignment="Left" FontSize="20" />
+
+                            <TextBox Width="150" VerticalAlignment="Top" Text="{Binding CardInfo.Name}" TextWrapping="Wrap" Margin="104,2,0,0" IsEnabled="False" Height="30" HorizontalAlignment="Left" FontSize="20" />
+                            <TextBlock x:Name="textBlock_Copy1" Text="手机" HorizontalAlignment="Left" Margin="0,50,0,0" TextWrapping="Wrap" VerticalAlignment="Top" Height="30" Background="#FFF981CE" FontSize="20" Width="80"/>
+                            <TextBlock Style="{StaticResource fontStyle}" x:Name="textBlock_Copy2" Text="会员姓名" HorizontalAlignment="Left" Margin="0,2,0,0" TextWrapping="Wrap" VerticalAlignment="Top" Height="30" Background="#FFF981CE" FontSize="20" Width="80"/>
+                            <TextBlock x:Name="textBlock_Copy4" Text="异常次数" HorizontalAlignment="Left" Margin="320,2,0,0" TextWrapping="Wrap" VerticalAlignment="Top" Height="30" Background="#FFF981CE" FontSize="20" Width="80"/>
+                            <TextBlock  Text="座位信息" HorizontalAlignment="Left" Margin="0,128,0,0" TextWrapping="Wrap" VerticalAlignment="Top" Height="30" Background="#FFF981CE" FontSize="20" Width="80"/>
+                            <TextBox HorizontalAlignment="Left" Height="30" Margin="104,122,0,0" TextWrapping="Wrap" Text="{Binding CardInfo.SeatInfo}" VerticalAlignment="Top" Width="464" IsEnabled="False" FontSize="20"/>
+                            <TextBox Width="150" VerticalAlignment="Top" Text="{Binding CardInfo.RealNameState}" TextWrapping="Wrap" Margin="418,48,0,0" IsEnabled="False" Height="30" HorizontalAlignment="Left" FontSize="20" />
+                            <TextBlock Text="实名认证" HorizontalAlignment="Left" Margin="320,50,0,0" TextWrapping="Wrap" VerticalAlignment="Top" Height="30" Background="#FFF981CE" FontSize="20" Width="80"/>
+
+                        </Grid>
 
                     </Grid>
                 </Grid>

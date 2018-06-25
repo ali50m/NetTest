@@ -50,13 +50,13 @@ namespace MemberMgmt.ViewModels
             get { return _message; }
             set { Set(ref _message, value); }
         }
-        string _rfidMemberNo;
-        //Rfid里存的会员号
-        public String RfidMemberNo
-        {
-            get { return _rfidMemberNo; }
-            set { Set(ref _rfidMemberNo, value); }
-        }
+        //string _rfidMemberNo;
+        ////Rfid里存的会员号
+        //public String RfidMemberNo
+        //{
+        //    get { return _rfidMemberNo; }
+        //    set { Set(ref _rfidMemberNo, value); }
+        //}
 
         bool _scanQrCodeEnable = true;
         /// <summary>
@@ -65,7 +65,14 @@ namespace MemberMgmt.ViewModels
         public bool ScanQrCodeEnable
         {
             get { return _scanQrCodeEnable; }
-            set { Set(ref _scanQrCodeEnable, value); }
+            set { Set(ref _scanQrCodeEnable, value); this.RaisePropertyChanged(() => WriteCardEnable); }
+        }
+        /// <summary>
+        /// 可否写卡
+        /// </summary>
+        public bool WriteCardEnable
+        {
+            get { return ScanQrCodeEnable && !string.IsNullOrWhiteSpace(CardInfo?.CardNum); }
         }
         string scanQrCodeFunc = "query";
         /// <summary>
@@ -142,10 +149,10 @@ namespace MemberMgmt.ViewModels
                         switch (ScanQrCodeFunc)
                         {
                             case "query":
-                                info = await _cardInfoService.GetOne("8820180633", false);
+                                info = await _cardInfoService.GetOne(str, false);//8820180633
                                 break;
                             case "consume":
-                                info = await _cardInfoService.GetOne("8820180633", true);
+                                info = await _cardInfoService.GetOne(str, true);
                                 break;
                         }
                         if (info != null)
@@ -163,7 +170,6 @@ namespace MemberMgmt.ViewModels
             {
                 return _readCardCommand ?? (_readCardCommand = new RelayCommand(async () =>
                 {
-
                     ScanQrCodeEnable = false;
                     var str = await Task.Run(() =>
                     {
@@ -184,9 +190,20 @@ namespace MemberMgmt.ViewModels
                     });
                     if (!string.IsNullOrEmpty(str))
                     {
-                        //MessageBox.Show("卡数据："+ str);
-                        Info info = await _cardInfoService.GetOne(str, false);
-                        LoadData(info);
+                        Info info = null;
+                        switch (ScanQrCodeFunc)
+                        {
+                            case "query":
+                                info = await _cardInfoService.GetOne(str, false);//8820180633
+                                break;
+                            case "consume":
+                                info = await _cardInfoService.GetOne(str, true);
+                                break;
+                        }
+                        if (info != null)
+                        {
+                            LoadData(info);
+                        }
                     }
                 }));
             }
@@ -198,8 +215,9 @@ namespace MemberMgmt.ViewModels
             {
                 return _writeCardCommand ?? (_writeCardCommand = new RelayCommand(() =>
                 {
-                    var rfidInfo = _rfidReader.WriteCard(new RfidInfo { MemberNo = RfidMemberNo });
-                    MessageBox.Show("写卡成功");
+
+                    var rfidInfo = _rfidReader.WriteCard(new RfidInfo { MemberNo = CardInfo.CardNum });
+                    Message = string.Format("卡号：{0}写卡成功", CardInfo.CardNum);
                 }));
             }
         }
@@ -224,17 +242,17 @@ namespace MemberMgmt.ViewModels
             }
         }
 
-        RelayCommand _checkServerCommand;
+        RelayCommand _clearFormCommand;
         /// <summary>
         /// 检查服务器状态
         /// </summary>
-        public RelayCommand CheckServerCommand
+        public RelayCommand ClearFormCommand
         {
             get
             {
-                return _checkServerCommand ?? (_checkServerCommand = new RelayCommand(() =>
+                return _clearFormCommand ?? (_clearFormCommand = new RelayCommand(() =>
                 {
-                    //throw new NotImplementedException("检查服务器状态未实现");
+                    LoadData(new Info());
                 }));
             }
         }
@@ -269,13 +287,14 @@ namespace MemberMgmt.ViewModels
 
 
             bool cardIsNull = info.Card == null;
-            CardInfo.State = cardIsNull ? "" : info.Card.MyMemberPossessCard.State == 1 ? "正常" : info.Card.MyMemberPossessCard.State == 2 ? "卡失效" : "";
+            CardInfo.State = cardIsNull ? "" : info.Card.MyMemberPossessCard.State == 1 ? "正常" : info.Card.MyMemberPossessCard.State == 2 ? "卡失效" : "卡待开启";
             CardInfo.CardNum = cardIsNull ? "" : info.Card.MyMemberPossessCard.CardNum;
             CardInfo.Name = cardIsNull ? "" : info.Member.UserName;
             CardInfo.StartDate = cardIsNull ? "" : info.Card.MyMemberPossessCard.BuyTime;
             CardInfo.EndDate = cardIsNull ? "" : info.Card.MyMemberPossessCard.LoseTime;
             CardInfo.CardType = cardIsNull ? "" : info.Card.Name;
 
+            this.RaisePropertyChanged(()=>WriteCardEnable);
         }
 
         public override void Cleanup()
