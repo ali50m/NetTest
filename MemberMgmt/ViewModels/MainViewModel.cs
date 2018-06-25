@@ -67,6 +67,29 @@ namespace MemberMgmt.ViewModels
             get { return _scanQrCodeEnable; }
             set { Set(ref _scanQrCodeEnable, value); }
         }
+        string scanQrCodeFunc="query";
+        /// <summary>
+        /// 扫码要做的操作，查询或消费
+        /// </summary>
+        public string ScanQrCodeFunc {
+            get { return scanQrCodeFunc; }
+            set { Set(ref scanQrCodeFunc, value); }
+        }
+        //TODO 可以用ListBox定制模板来放置两个单选框
+        RelayCommand<string> _scanQrCodeFuncCommand;
+        /// <summary>
+        /// 开卡
+        /// </summary>
+        public RelayCommand<string> ScanQrCodeFuncCommand
+        {
+            get
+            {
+                return _scanQrCodeFuncCommand ?? (_scanQrCodeFuncCommand = new RelayCommand<string>(funcStr =>
+                {
+                    ScanQrCodeFunc = funcStr;
+                }));
+            }
+        }
 
         RelayCommand _openCardCommand;
         /// <summary>

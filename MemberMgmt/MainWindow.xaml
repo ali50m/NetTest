@@ -53,7 +53,6 @@
                     <ColumnDefinition/>
                 </Grid.ColumnDefinitions>
                 <Grid Margin="82,6,70,19" Grid.Row="1">
-                    <Button Width="150" VerticalAlignment="Top" x:Name="textBlock_Copy15" Margin="0,24,20,0" Height="30" HorizontalAlignment="Right" Content="服务器通讯状态" Background="#FFF06AD7" FontSize="20" Command="{Binding CheckServerCommand, Mode=OneWay}" />
                     <TextBlock Width="289" VerticalAlignment="Top" Text="{Binding Message}" TextWrapping="Wrap" x:Name="textBlock_Copy14" Margin="0,14,188,0" Height="50" HorizontalAlignment="Right" Background="#FF6786C7" FontSize="20"  />
                     <Button Width="80" VerticalAlignment="Top" x:Name="textBlock_Copy13" Margin="324,24,0,0" Height="30" HorizontalAlignment="Left" Command="{Binding OpenCardCommand, Mode=OneWay}" Content="开卡" Background="#FFF5CC40" FontSize="20"  />
                     <TextBlock VerticalAlignment="Top" Text="当前会员卡号" TextWrapping="Wrap" x:Name="textBlock_Copy12" Height="30" HorizontalAlignment="Left" Background="#FFE04CD9" FontSize="20" Width="126" Margin="0,24,0,0"     />
@@ -61,7 +60,11 @@
                     <Button Width="80" VerticalAlignment="Top" Margin="428,24,0,0" Height="30" HorizontalAlignment="Left" Command="{Binding ScanQrCodeCommand, Mode=OneWay}" Content="扫码" Background="#FFF5CC40" IsEnabled="{Binding ScanQrCodeEnable}" FontSize="20"  />
                     <Button Width="80" VerticalAlignment="Top" Margin="536,24,0,0" Height="30" HorizontalAlignment="Left" Command="{Binding ReadCardCommand, Mode=OneWay}" Content="读卡" Background="#FFF5CC40" IsEnabled="{Binding ScanQrCodeEnable}" FontSize="20"  />
                     <Button Width="80" VerticalAlignment="Top" Margin="536,80,0,0" Height="30" HorizontalAlignment="Left" Command="{Binding WriteCardCommand, Mode=OneWay}" Content="写卡" Background="#FFF5CC40" IsEnabled="{Binding ScanQrCodeEnable}" FontSize="20"  />
-                    <TextBox Margin="263,80,662,22" Text="{Binding RfidMemberNo}"></TextBox>
+                    <TextBox Margin="263,80,662,22" Text="{Binding RfidMemberNo}" FontSize="20"></TextBox>
+                    <StackPanel Margin="10,80,1004,10" Orientation="Horizontal">
+                        <RadioButton  Content="查询" HorizontalAlignment="Left" VerticalAlignment="Top"  FontSize="20" Command="{Binding ScanQrCodeFuncCommand, Mode=OneWay}" CommandParameter="query" IsChecked="True" Width="77" Height="32" />
+                        <RadioButton Content="消费" HorizontalAlignment="Left" VerticalAlignment="Top" FontSize="20" Command="{Binding ScanQrCodeFuncCommand, Mode=OneWay}" CommandParameter="consume" Width="74" Height="32"/>
+                    </StackPanel>
                 </Grid>
                 <Grid>
                     <Grid.ColumnDefinitions>
