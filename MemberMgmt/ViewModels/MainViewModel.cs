@@ -35,7 +35,7 @@ namespace MemberMgmt.ViewModels
             }
             else
             {
-                
+
             }
         }
 
@@ -67,11 +67,12 @@ namespace MemberMgmt.ViewModels
             get { return _scanQrCodeEnable; }
             set { Set(ref _scanQrCodeEnable, value); }
         }
-        string scanQrCodeFunc="query";
+        string scanQrCodeFunc = "query";
         /// <summary>
         /// 扫码要做的操作，查询或消费
         /// </summary>
-        public string ScanQrCodeFunc {
+        public string ScanQrCodeFunc
+        {
             get { return scanQrCodeFunc; }
             set { Set(ref scanQrCodeFunc, value); }
         }
@@ -137,9 +138,20 @@ namespace MemberMgmt.ViewModels
                     });
                     if (!string.IsNullOrEmpty(str))
                     {
-                        //Info info = await _cardInfoService.GetOne("88336632114782");
-                        Info info = await _cardInfoService.GetOne("8820180633");
-                        LoadData(info);
+                        Info info = null;
+                        switch (ScanQrCodeFunc)
+                        {
+                            case "query":
+                                info = await _cardInfoService.GetOne("8820180633", false);
+                                break;
+                            case "consume":
+                                info = await _cardInfoService.GetOne("8820180633", true);
+                                break;
+                        }
+                        if (info != null)
+                        {
+                            LoadData(info);
+                        }
                     }
                 }));
             }
@@ -173,7 +185,7 @@ namespace MemberMgmt.ViewModels
                     if (!string.IsNullOrEmpty(str))
                     {
                         //MessageBox.Show("卡数据："+ str);
-                        Info info = await _cardInfoService.GetOne(str);
+                        Info info = await _cardInfoService.GetOne(str, false);
                         LoadData(info);
                     }
                 }));
@@ -247,24 +259,23 @@ namespace MemberMgmt.ViewModels
         }
         void LoadData(Info info)
         {
-            Message = info?.Message??"";
-            CardInfo.SeatInfo = info?.SeatsInfo??"";
-            CardInfo.PhotoSource = string.IsNullOrEmpty(info.Photo)? new BitmapImage(): new BitmapImage( new Uri(info.Photo));
-            CardInfo.Mobile = info?.Member?.Mobile??"";
-            CardInfo.NoConsumption = info?.Member?.NoConsumption?.ToString()??"";
+            Message = info?.Message ?? "";
+            CardInfo.SeatInfo = info?.SeatsInfo ?? "";
+            CardInfo.PhotoSource = string.IsNullOrEmpty(info.Photo) ? new BitmapImage() : new BitmapImage(new Uri(info.Photo));
+            CardInfo.Mobile = info?.Member?.Mobile ?? "";
+            CardInfo.NoConsumption = info?.Member?.NoConsumption?.ToString() ?? "";
             var step = info?.Member?.Step;
-            CardInfo.RealNameState = step == 3 ? "已认证" :step==null?"": "未认证";
+            CardInfo.RealNameState = step == 3 ? "已认证" : step == null ? "" : "未认证";
 
-            if (info.Ref != "2")
-            {
-                bool cardIsNull = info.Card == null;
-                CardInfo.State = cardIsNull ? "" : info.Card.MyMemberPossessCard.State == 1 ? "正常" : info.Card.MyMemberPossessCard.State == 2 ? "卡失效" : "";
-                CardInfo.CardNum = cardIsNull ? "" : info.Card.MyMemberPossessCard.CardNum;
-                CardInfo.Name = cardIsNull ? "" : info.Member.UserName;
-                CardInfo.StartDate = cardIsNull ? "" : info.Card.MyMemberPossessCard.BuyTime;
-                CardInfo.EndDate = cardIsNull ? "" : info.Card.MyMemberPossessCard.LoseTime;
-                CardInfo.CardType = cardIsNull ? "" : info.Card.Name;
-            }
+
+            bool cardIsNull = info.Card == null;
+            CardInfo.State = cardIsNull ? "" : info.Card.MyMemberPossessCard.State == 1 ? "正常" : info.Card.MyMemberPossessCard.State == 2 ? "卡失效" : "";
+            CardInfo.CardNum = cardIsNull ? "" : info.Card.MyMemberPossessCard.CardNum;
+            CardInfo.Name = cardIsNull ? "" : info.Member.UserName;
+            CardInfo.StartDate = cardIsNull ? "" : info.Card.MyMemberPossessCard.BuyTime;
+            CardInfo.EndDate = cardIsNull ? "" : info.Card.MyMemberPossessCard.LoseTime;
+            CardInfo.CardType = cardIsNull ? "" : info.Card.Name;
+
         }
 
         public override void Cleanup()

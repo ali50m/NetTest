@@ -9,7 +9,7 @@ namespace MemberMgmt.DesignRepositories
 {
     class CardInfoRepository : IRepositories.ICardInfoRepository
     {
-        public async Task<Info> GetOne(string qrCode)
+        public async Task<Info> GetOne(string qrCode,bool withConsume)
         {
             await Task.FromResult(0);
             return new Info

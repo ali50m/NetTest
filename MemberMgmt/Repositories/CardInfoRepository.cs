@@ -12,7 +12,7 @@ namespace MemberMgmt.Repositories
     class CardInfoRepository : IRepositories.ICardInfoRepository
     {
 
-        public async Task<Info> GetOne(string qrCode)
+        public async Task<Info> GetOne(string qrCode, bool withConsume)
         {
             using (var client = new HttpClient())
             {
@@ -21,7 +21,8 @@ namespace MemberMgmt.Repositories
                     new KeyValuePair<string, string>("info",qrCode)
                 };
                 var content = new FormUrlEncodedContent(keyValuePairs);
-                var responseMessage = await client.PostAsync("client/verify", content);
+
+                var responseMessage = await client.PostAsync(withConsume ? "client/verify" : "client/selectMember", content);
                 //var info = await responseMessage.Content.ReadAsStringAsync();
                 var info = await responseMessage.Content.ReadAsAsync<Info>();
                 return info;

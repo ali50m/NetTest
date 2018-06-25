@@ -17,11 +17,12 @@ namespace MemberMgmt.Services
         /// <summary>
         /// 用二维码字符串查询会员信息
         /// </summary>
-        /// <param name="qrCode"></param>
+        /// <param name="qrCode">二维码字符串</param>
+        /// <param name="withConsume">是否消费</param>
         /// <returns></returns>
-        internal async Task<Info> GetOne(string qrCode)
+        internal async Task<Info> GetOne(string qrCode,bool withConsume)
         {
-            return await _repository.GetOne(qrCode);
+            return await _repository.GetOne(qrCode, withConsume);
         }
         /// <summary>
         /// 用会员名或手机号查会员信息
