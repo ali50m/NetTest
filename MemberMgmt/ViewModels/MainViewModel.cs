@@ -309,17 +309,12 @@ namespace MemberMgmt.ViewModels
             CardInfo.NoConsumption = info?.Member?.NoConsumption?.ToString() ?? "";
             var step = info?.Member?.Step;
             CardInfo.RealNameState = step == 3 ? "已认证" : step == null ? "" : "未认证";
-            
-            if (info.Ref == "2")
-            {
-                Message = info.Message;
-                return;
-            }
-            CardInfo.Name = info.Member.UserName;
-            CardInfo.SeatInfo = info.SeatsInfo;
-            CardInfo.Mobile = info.Member.Mobile;
-            CardInfo.NoConsumption = info.Member.NoConsumption.ToString();
-            CardInfo.Id = info.Member.Id;
+
+            CardInfo.Name = info?.Member?.UserName;
+            CardInfo.SeatInfo = info?.SeatsInfo;
+            CardInfo.Mobile = info?.Member?.Mobile;
+            CardInfo.NoConsumption = info?.Member?.NoConsumption?.ToString();
+            CardInfo.Id = info?.Member?.Id;
             bool cardIsNull = info.Card == null;
             CardInfo.State = cardIsNull ? "" : info.Card.MyMemberPossessCard.State == 1 ? "正常" : info.Card.MyMemberPossessCard.State == 2 ? "卡失效" : "卡待开启";
             CardInfo.CardNum = cardIsNull ? "" : info.Card.MyMemberPossessCard.CardNum;
