@@ -23,13 +23,12 @@ namespace MemberMgmt
         {
             try
             {
-                //LogHelper.Instance.Logger.Error(e.Exception, "UI线程全局异常");
+                MessageBox.Show(string.Format("UI线程全局异常：{0}", e.Exception));
                 e.Handled = true;
             }
             catch (Exception ex)
             {
-                //LogHelper.Instance.Logger.Error(ex, "不可恢复的UI线程全局异常");
-                MessageBox.Show("应用程序发生不可恢复的异常，将要退出！");
+                MessageBox.Show(string.Format("应用程序发生不可恢复的异常，将要退出！异常：{0}",ex));
             }
         }
 
@@ -40,13 +39,12 @@ namespace MemberMgmt
                 var exception = e.ExceptionObject as Exception;
                 if (exception != null)
                 {
-                    //LogHelper.Instance.Logger.Error(exception, "非UI线程全局异常");
+                    MessageBox.Show(string.Format("UI线程全局异常：{0}", exception));
                 }
             }
             catch (Exception ex)
             {
-                //LogHelper.Instance.Logger.Error(ex, "不可恢复的非UI线程全局异常");
-                MessageBox.Show("应用程序发生不可恢复的异常，将要退出！");
+                MessageBox.Show(string.Format("应用程序发生不可恢复的异常，将要退出！异常：{0}", ex));
             }
         }
     }
