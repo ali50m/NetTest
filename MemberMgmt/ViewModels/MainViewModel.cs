@@ -35,7 +35,7 @@ namespace MemberMgmt.ViewModels
             }
             else
             {
-
+                Message = string.Format("服务器基础地址：{0}", Properties.Settings.Default.ApiBaseUrl);
             }
         }
 

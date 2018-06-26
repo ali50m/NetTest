@@ -97,14 +97,12 @@
     </ApplicationDefinition>
     <Compile Include="DesignRepositories\CardInfoRepository.cs" />
     <Compile Include="IRepositories\ICardInfoRepository.cs" />
-    <Compile Include="IRepositories\IServerPing.cs" />
     <Compile Include="Models\Card.cs" />
     <Compile Include="Models\Member.cs" />
     <Compile Include="Models\Info.cs" />
     <Compile Include="Models\RfidInfo.cs" />
     <Compile Include="Models\Seat.cs" />
     <Compile Include="Repositories\CardInfoRepository.cs" />
-    <Compile Include="Repositories\ServerPing.cs" />
     <Compile Include="Services\CardInfoService.cs" />
     <Compile Include="Services\Reader.cs" />
     <Compile Include="Services\Reader.custom.cs" />
@@ -154,7 +152,9 @@
     </None>
   </ItemGroup>
   <ItemGroup>
-    <None Include="App.config" />
+    <None Include="App.config">
+      <SubType>Designer</SubType>
+    </None>
   </ItemGroup>
   <ItemGroup>
     <Content Include="function.dll">
