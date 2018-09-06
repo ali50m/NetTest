@@ -1,4 +1,4 @@
-<!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
+﻿<!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
 <html>
 <head>
     <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
@@ -13,25 +13,25 @@
 
 </head>
 <body>
-<div id="page">
-    <input type="button" value="发送" id="send" />
-</div>
-</body>
-<script type="text/javascript">
+    <div id="page">
+        <input type="button" value="发送" id="send" />
+    </div>
+    <script type="text/javascript">
 
-    var hub = $.connection.systemHub;
-    $("#send").click(function () {
-        hub.server.receive("客户端发送");
-    });
-
-
-    hub.client.hello = function (message) {
-        console.log("收到消息:"+message);
-    };
-
-    $.connection.hub.start()
-        .done(function () {
-            console.log("连接socket");
+        var hub = $.connection.systemHub;
+        $("#send").click(function () {
+            hub.server.receive("客户端发送");
         });
-</script>
+
+
+        hub.client.hello = function (message) {
+            console.log("收到消息:" + message);
+        };
+
+        $.connection.hub.start()
+            .done(function () {
+                console.log("连接socket");
+            });
+    </script>
+</body>
 </html>
